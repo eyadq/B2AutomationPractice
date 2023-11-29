@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 
 public class _1_NoABTest {
 
-    public static void main(String[] args) {
+    public static void run() {
 
         WebDriver driver = WebDriverFactory.getDriver("chrome");
         driver.get("https://loopcamp.vercel.app/ab-test.html");
@@ -20,8 +20,9 @@ public class _1_NoABTest {
         WebElement noABBody = driver.findElement(By.cssSelector("div[class='example']>p"));
         HelperMethods.logPrintMatch("No AB Test body text", noABBody.getText(), VercelConstants.NoAB_BODY);
 
+    }
 
-
-
+    public static void main(String[] args) {
+        run();
     }
 }

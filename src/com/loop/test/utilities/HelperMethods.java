@@ -1,5 +1,7 @@
 package com.loop.test.utilities;
 
+import java.util.Arrays;
+
 public class HelperMethods {
 
     public static void main(String[] args) {
@@ -14,6 +16,23 @@ public class HelperMethods {
         } else {
             output = "TEST FAILED => The actual " + tested + ": \"" + actual + "\" does NOT match the expected " + tested + ": \"" + expected + "\"";
             System.err.println(output);
+        }
+    }
+
+    public static void logPrintMatch(String tested, String[] actual, String[] expected){
+        String output = "";
+        if(Arrays.equals(expected, actual)){
+            output = "TEST PASSED => The actual " + tested + " matches the expected " + tested + ":";
+            System.out.println(output);
+            for (int i = 0; i < actual.length; i++) {
+                System.out.println("\t" + actual[i]);
+            }
+        } else {
+            output = "TEST PASSED => The actual " + tested +  " does NOT match the expected " + tested + ":";
+            System.err.println(output);
+            for (int i = 0; i < actual.length; i++) {
+                System.out.println("\tActual value: " + actual[i] + " does NOT match expected value: " + expected[i]);
+            }
         }
     }
 
