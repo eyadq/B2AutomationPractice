@@ -10,11 +10,15 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 import java.util.Random;
 
-public class _0_Vercel {
+public class _0_Home{
 
-    public static void main(String[] args) {
+    public static void run() {
+
         WebDriver driver = WebDriverFactory.getDriver("chrome");
         driver.get("https://loopcamp.vercel.app/index.html");
+
+        System.out.println();
+        System.err.println("Home Page test");
 
         WebElement logoLoop = driver.findElement(By.xpath("//img[@src='./img/logo.svg']"));
         WebElement logoAcademy= driver.findElement(By.xpath("//img[@src='./img/logo-text.svg']"));
@@ -56,10 +60,9 @@ public class _0_Vercel {
         Random random = new Random();
         itemLinks.get(random.nextInt(50)).click();
 
+    }
 
-
-
-
-
+    public static void main(String[] args) {
+        run();
     }
 }
