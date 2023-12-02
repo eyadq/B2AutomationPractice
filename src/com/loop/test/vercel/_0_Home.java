@@ -12,13 +12,12 @@ import java.util.Random;
 
 public class _0_Home{
 
-    public static void run() {
+    public static void run(WebDriver driver) {
 
-        WebDriver driver = WebDriverFactory.getDriver("chrome");
         driver.get("https://loopcamp.vercel.app/index.html");
 
         System.out.println();
-        System.err.println("Home Page test");
+        System.err.println("0. Home Page test");
 
         WebElement logoLoop = driver.findElement(By.xpath("//img[@src='./img/logo.svg']"));
         WebElement logoAcademy= driver.findElement(By.xpath("//img[@src='./img/logo-text.svg']"));
@@ -63,6 +62,7 @@ public class _0_Home{
     }
 
     public static void main(String[] args) {
-        run();
+        WebDriver driver = WebDriverFactory.getDriver("chrome");
+        run(driver);
     }
 }
