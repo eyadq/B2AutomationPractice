@@ -12,9 +12,8 @@ import java.util.Random;
 
 public class _2_AddRemoveElements {
 
-    public static void run() throws InterruptedException {
+    public static void run(WebDriver driver) throws InterruptedException {
 
-        WebDriver driver = WebDriverFactory.getDriver("chrome");
         driver.get("https://loopcamp.vercel.app/add-remove-elements.html");
 
         WebElement addRemoveHeader = driver.findElement(By.tagName("h3"));
@@ -65,6 +64,7 @@ public class _2_AddRemoveElements {
         return driver.findElements(By.cssSelector("button[class='added-manually btn btn-secondary']"));
     }
     public static void main(String[] args) throws InterruptedException {
-        run();
+        WebDriver driver = WebDriverFactory.getDriver("chrome");
+        run(driver);
     }
 }

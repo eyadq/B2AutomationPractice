@@ -9,9 +9,8 @@ import org.openqa.selenium.WebElement;
 
 public class _1_NoABTest {
 
-    public static void run() {
+    public static void run(WebDriver driver) {
 
-        WebDriver driver = WebDriverFactory.getDriver("chrome");
         driver.get("https://loopcamp.vercel.app/ab-test.html");
 
         WebElement noABHeader = driver.findElement(By.tagName("h3"));
@@ -23,6 +22,7 @@ public class _1_NoABTest {
     }
 
     public static void main(String[] args) {
-        run();
+        WebDriver driver = WebDriverFactory.getDriver("chrome");
+        run(driver);
     }
 }

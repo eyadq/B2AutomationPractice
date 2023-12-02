@@ -22,5 +22,6 @@ public class VercelConstants {
     public static final String AUTOCOMPLETE_PARAGRAPH = "Start typing:";
     public static final String AUTOCOMPLETE_PLACEHOLDER_COUNTRY = "Country";
     public static final String AUTOCOMPLETE_OPTIONS_SINGLE = "Palestine";
+    public static final String AUTOCOMPLETE_LOGGED_RESULT = "You selected: Palestine";
     public static final String[] AUTOCOMPLETE_OPTIONS_MULTIPLE = {"United Arab Emirates", "United Kingdom", "United States of America"};
 }
