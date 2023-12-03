@@ -4,7 +4,7 @@ public class VercelConstants {
 
     //Image Links
     public static final String IMAGE_URL_LOGO_LOOP = "https://loopcamp.vercel.app/img/logo.svg";
-    public static final String IMAGE_URL_LOGO_ACADEMY= "https://loopcamp.vercel.app/img/logo-text.svg";
+    public static final String IMAGE_URL_LOGO_ACADEMY = "https://loopcamp.vercel.app/img/logo-text.svg";
 
     //Main Page
     public static final String MAIN_HEADER_TEST_AUTOMATION_PRACTICE = "Test Automation Practice";
@@ -24,4 +24,9 @@ public class VercelConstants {
     public static final String AUTOCOMPLETE_OPTIONS_SINGLE = "Palestine";
     public static final String AUTOCOMPLETE_LOGGED_RESULT = "You selected: Palestine";
     public static final String[] AUTOCOMPLETE_OPTIONS_MULTIPLE = {"United Arab Emirates", "United Kingdom", "United States of America"};
+
+
+    //Broken Images
+    public static final String BROKEN_IMAGES_ACTUAL_FILE_PATH = "src/com/loop/test/vercel/data/avatar-blank.jpg";
+
 }

@@ -1,6 +1,7 @@
 package com.loop.test.vercel;
 
 import com.loop.test.utilities.HelperMethods;
+import com.loop.test.utilities.VercelConstants;
 import com.loop.test.utilities.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import static com.loop.test.vercel.SimpleSwing.showImage;
 
@@ -22,12 +24,22 @@ public class _5_BrokenImages {
         driver.manage().window().maximize();
         //     //img[@src='img/avatar-blank.jpg']
         driver.get("https://loopcamp.vercel.app/broken-images.html");
-        WebElement nonBrokenImage = driver.findElement(By.xpath("//img[@src='img/avatar-blank.jpg']"));
 
-        String urlImage = nonBrokenImage.getAttribute("src");
+        WebElement imageContainer = driver.findElement(By.xpath("//div[@class='example']"));
+        List<WebElement> images = imageContainer.findElements(By.tagName("img"));
 
-        SimpleSwing.showImage(urlImage, "src/com/loop/test/vercel/data/avatar-blank.jpg");
-        HelperMethods.logPrintFileMatch("checksum of image", urlImage, "src/com/loop/test/vercel/data/avatar-blank.jpg");
+        int count = 0;
+        for (WebElement element : images){
+            String link = element.getAttribute("src");
+            String fileExtension = link.substring(link.lastIndexOf('.') + 1);
+            if(!fileExtension.equals("jpg")){
+                HelperMethods.logPrintMatch("image " + count + " file type", fileExtension, "jpg");;
+            } else {
+                SimpleSwing.showImage(link, VercelConstants.BROKEN_IMAGES_ACTUAL_FILE_PATH);
+                HelperMethods.logPrintFileMatch("checksum of image " + count, link, VercelConstants.BROKEN_IMAGES_ACTUAL_FILE_PATH);
+            }
+            count++;
+        }
 
 
     }
