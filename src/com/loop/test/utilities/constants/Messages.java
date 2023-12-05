@@ -1,4 +1,4 @@
-package com.loop.test.utilities;
+package com.loop.test.utilities.constants;
 
 public class Messages {
 

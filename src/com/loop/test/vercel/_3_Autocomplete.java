@@ -1,6 +1,6 @@
 package com.loop.test.vercel;
 
-import com.loop.test.utilities.VercelConstants;
+import com.loop.test.utilities.constants.VercelConstants;
 import com.loop.test.utilities.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;

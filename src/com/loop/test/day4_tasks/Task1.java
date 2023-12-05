@@ -1,13 +1,12 @@
 package com.loop.test.day4_tasks;
 
-import com.loop.test.utilities.DocuportConstants;
+import com.loop.test.utilities.constants.DocuportConstants;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Task1 {

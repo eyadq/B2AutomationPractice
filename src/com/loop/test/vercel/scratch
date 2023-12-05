@@ -1,38 +1,99 @@
+package com.loop.test.utilities;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+public class FileUtil {
+
+    public static void main(String[] args) {
+        String urllink = "https://loopcamp.vercel.app/img/avatar-blank.jpg";
+        String filePath = "src/com/loop/test/vercel/data/avatar-blank.jpg";
+//        String checksumActual = checksum(Enums.ImageType.URL, urllink);
+//        String checksumExpected = checksum(Enums.ImageType.FILE, filePath);
+//        LogUtil.logPrintMatch(checksumActual, checksumExpected, "checksum of image");
+
+    }
+
+    public static String downloadFile(String link){
+        String fileExtension = link.substring(link.lastIndexOf('.'));
+        String fileNameActual = link.substring(link.lastIndexOf('/')+1 , link.lastIndexOf('.')) + "-actual";
+        String filePath = "src\\com\\loop\\test\\vercel\\data\\" + fileNameActual + fileExtension;
+
+        try{
+            BufferedImage image = ImageIO.read(new URL(link));
+            ImageIO.write(image, "png", new File(filePath));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return filePath;
+    }
+
+    public static String checksum (Enums.ImageType type, String link){
+
+        byte[] data = null;
+        byte[] hash = null;
+        String checksum = null;
+
+        String filePath = "";
+        switch(type){
+            case URL:
 
                 URL urlObject = null;
                 URI uriObject = null;
-                byte[] data;
-                byte[] hash;
+
+                //https://loopcamp.vercel.app/img/avatar-blank.jpg"
+                String fileExtension = link.substring(link.lastIndexOf('.'));
+                String fileNameActual = link.substring(link.lastIndexOf('/')+1 , link.lastIndexOf('.')) + "-actual";
+                filePath = "src\\com\\loop\\test\\vercel\\data\\" + fileNameActual + fileExtension;
 
                 try{
                     urlObject = new URL(link);
                     uriObject = urlObject.toURI();
-                } catch (MalformedURLException e){
-                    //Bad URL
+
+                    //code from https://crunchify.com/5-different-ways-to-download-a-file-from-any-given-url-in-java/
+                    //only things we need to change here are URL object: urlObject and filepath for file to download: filePathActual
+                    ReadableByteChannel byteChannel = Channels.newChannel(urlObject.openStream());
+                    FileOutputStream outputStream = new FileOutputStream(filePath);
+                    outputStream.getChannel().transferFrom(byteChannel, 0, Long.MAX_VALUE);
+                    outputStream.close();
+                    byteChannel.close();
+
                 } catch (URISyntaxException e){
                     //Bad URI
+                } catch (MalformedURLException e){
+                    //Bad URL
+                } catch (IOException e){
+                    //openStream(), transferFrom(), close()
                 }
+                break;
+            case FILE:
+                filePath = link;
+                break;
+        }
+        try {
+            data = Files.readAllBytes(Path.of(filePath));
+            hash = MessageDigest.getInstance("MD5").digest(data);
+            checksum = new BigInteger(1, hash).toString(16);
+        } catch(IOException | NoSuchAlgorithmException e){
 
-                //code from https://crunchify.com/5-different-ways-to-download-a-file-from-any-given-url-in-java/
-                //only things we need to change here are URL object: urlObject and filepath for file to download: filePathActual
-                ReadableByteChannel byteChannel = Channels.newChannel(urlObject.openStream());
-                FileOutputStream outputStream = new FileOutputStream(filePathActual);
-                outputStream.getChannel().transferFrom(byteChannel, 0, Long.MAX_VALUE);
-                outputStream.close();
-                byteChannel.close();
-
-                data = Files.readAllBytes(Path.of(filePathActual));
-                hash = MessageDigest.getInstance("MD5").digest(dataActual);
-
-
-
-
-
-
-
-
-
-
-                src\com\loop\test\vercel\data\avatar-blank-actual.jpg
-                TEST PASSED => The actual image checksum: "3d16b906c2c940a28c04809184bb272f" matches the expected image checksum: "3d16b906c2c940a28c04809184bb272f"
+        }
+        return checksum;
+    }
+}
