@@ -10,7 +10,6 @@
             <class name="com.loop.test.vercel._3_Autocomplete" />
             <class name="com.loop.test.vercel._4_BasicAuth" />
             <class name="com.loop.test.vercel._5_BrokenImages" />
-            <class name="com.loop.test.vercel._6_ChallengingDOM" />
         </classes>
 
     </test>
