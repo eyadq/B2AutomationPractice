@@ -1,10 +1,11 @@
-package com.loop.test.utilities;
+package com.loop.test.utilities.constants;
 
 public class VercelConstants {
 
     //Image Links
     public static final String IMAGE_URL_LOGO_LOOP = "https://loopcamp.vercel.app/img/logo.svg";
     public static final String IMAGE_URL_LOGO_ACADEMY = "https://loopcamp.vercel.app/img/logo-text.svg";
+    public static final String MAIN_BINARY_RESOURCE_DIR = "src\\com\\loop\\test\\vercel\\data\\";
 
     //Main Page
     public static final String MAIN_HEADER_TEST_AUTOMATION_PRACTICE = "Test Automation Practice";
@@ -29,4 +30,8 @@ public class VercelConstants {
     //Broken Images
     public static final String BROKEN_IMAGES_ACTUAL_FILE_PATH = "src/com/loop/test/vercel/data/avatar-blank.jpg";
 
+    //Checkboxes
+    public static final String CHECKBOXES_HEADER = "Checkboxes";
+    public static final String[] CHECKBOXES_LABELS = {"Checkbox 1", "Checkbox 2"};
+    public static final String[] CHECKBOXES_OPTIONS= {"checkbox1", "checkbox2"};
 }

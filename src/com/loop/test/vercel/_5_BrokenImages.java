@@ -1,15 +1,13 @@
 package com.loop.test.vercel;
 
-import com.loop.test.utilities.Enums;
-import com.loop.test.utilities.HelperMethods;
-import com.loop.test.utilities.VercelConstants;
+import com.loop.test.utilities.FileUtil;
+import com.loop.test.utilities.LogUtil;
+import com.loop.test.utilities.constants.VercelConstants;
 import com.loop.test.utilities.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.ITestContext;
-import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 import java.util.List;
@@ -31,16 +29,17 @@ public class _5_BrokenImages {
             String link = element.getAttribute("src");
             String fileExtension = link.substring(link.lastIndexOf('.'));
             if (!fileExtension.equals(".jpg")) {
-                HelperMethods.logPrintMatch(fileExtension, "jpg", "image " + count + " file type");
+                LogUtil.logPrintMatch(fileExtension, "jpg", "image " + count + " file type");
                 //Assert.assertNotEquals(fileExtension, "jpg", "image " + count + " file type");
             } else {
                 SimpleSwing.showImage(link, VercelConstants.BROKEN_IMAGES_ACTUAL_FILE_PATH);
 
-                String fileNameActual = link.substring(link.lastIndexOf('/')+1 , link.lastIndexOf('.')) + "-actual";
-                String filePath = "src\\com\\loop\\test\\vercel\\data\\" + fileNameActual + fileExtension;
+                String filePathActual = FileUtil.downloadFile(link);
+                String checksumActual = FileUtil.getChecksum(filePathActual);
 
-                String checksumActual = HelperMethods.checksum(Enums.ImageType.URL, link);
-                String checksumExpected = HelperMethods.checksum(Enums.ImageType.FILE, filePath);
+                String filePathExpected = FileUtil.getExpectedFilePathFromURL(link);
+                String checksumExpected = FileUtil.getChecksum(filePathExpected);
+
                 Assert.assertEquals(checksumActual, checksumExpected, "checksum of image");
             }
 
