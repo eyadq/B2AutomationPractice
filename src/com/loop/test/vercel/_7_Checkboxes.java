@@ -72,7 +72,7 @@ public class _7_Checkboxes {
 
     @AfterMethod
     public void tearDownMethod(){
-        //driver.quit();
+        driver.quit();
     }
 
     @AfterClass
