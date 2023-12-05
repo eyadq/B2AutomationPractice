@@ -1,0 +1,16 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name= "All">
+    <test name= "All">
+        <classes>
+            <class name="com.loop.test.vercel._0_Home" />
+            <class name="com.loop.test.vercel._1_NoABTest" />
+            <class name="com.loop.test.vercel._2_AddRemoveElements" />
+            <class name="com.loop.test.vercel._3_Autocomplete" />
+            <class name="com.loop.test.vercel._4_BasicAuth" />
+            <class name="com.loop.test.vercel._5_BrokenImages" />
+        </classes>
+
+    </test>
+</suite>

@@ -1,0 +1,38 @@
+
+
+                URL urlObject = null;
+                URI uriObject = null;
+                byte[] data;
+                byte[] hash;
+
+                try{
+                    urlObject = new URL(link);
+                    uriObject = urlObject.toURI();
+                } catch (MalformedURLException e){
+                    //Bad URL
+                } catch (URISyntaxException e){
+                    //Bad URI
+                }
+
+                //code from https://crunchify.com/5-different-ways-to-download-a-file-from-any-given-url-in-java/
+                //only things we need to change here are URL object: urlObject and filepath for file to download: filePathActual
+                ReadableByteChannel byteChannel = Channels.newChannel(urlObject.openStream());
+                FileOutputStream outputStream = new FileOutputStream(filePathActual);
+                outputStream.getChannel().transferFrom(byteChannel, 0, Long.MAX_VALUE);
+                outputStream.close();
+                byteChannel.close();
+
+                data = Files.readAllBytes(Path.of(filePathActual));
+                hash = MessageDigest.getInstance("MD5").digest(dataActual);
+
+
+
+
+
+
+
+
+
+
+                src\com\loop\test\vercel\data\avatar-blank-actual.jpg
+                TEST PASSED => The actual image checksum: "3d16b906c2c940a28c04809184bb272f" matches the expected image checksum: "3d16b906c2c940a28c04809184bb272f"
