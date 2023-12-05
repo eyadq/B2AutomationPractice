@@ -1,12 +1,11 @@
 package com.loop.test.day3_tasks;
 
-import com.loop.test.utilities.DocuportConstants;
+import com.loop.test.utilities.constants.DocuportConstants;
 import com.loop.test.utilities.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class T3_getAttribute_css {

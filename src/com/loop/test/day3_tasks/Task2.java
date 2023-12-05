@@ -1,6 +1,6 @@
 package com.loop.test.day3_tasks;
 
-import com.loop.test.utilities.DocuportConstants;
+import com.loop.test.utilities.constants.DocuportConstants;
 import com.loop.test.utilities.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

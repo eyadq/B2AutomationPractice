@@ -1,16 +1,13 @@
 package com.loop.test.vercel;
 
-import com.loop.test.utilities.HelperMethods;
-import com.loop.test.utilities.Messages;
-import com.loop.test.utilities.VercelConstants;
+import com.loop.test.utilities.constants.Messages;
+import com.loop.test.utilities.constants.VercelConstants;
 import com.loop.test.utilities.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
-
-import java.sql.Driver;
 
 public class _1_NoABTest {
 
