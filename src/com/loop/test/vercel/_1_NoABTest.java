@@ -1,28 +1,58 @@
 package com.loop.test.vercel;
 
 import com.loop.test.utilities.HelperMethods;
+import com.loop.test.utilities.Messages;
 import com.loop.test.utilities.VercelConstants;
 import com.loop.test.utilities.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+import org.testng.annotations.*;
+
+import java.sql.Driver;
 
 public class _1_NoABTest {
 
-    public static void run(WebDriver driver) {
 
-        driver.get("https://loopcamp.vercel.app/ab-test.html");
+    WebDriver driver;
 
+
+     String pageURL = ("https://loopcamp.vercel.app/ab-test.html");
+
+    @Test
+    public void testHeader(){
         WebElement noABHeader = driver.findElement(By.tagName("h3"));
-        HelperMethods.logPrintMatch("NO A/B Test header text", noABHeader.getText(), VercelConstants.NoAB_HEADER);
+        //HelperMethods.logPrintMatch(noABHeader.getText(), VercelConstants.NoAB_HEADER, "NO A/B Test header text");
+        Assert.assertEquals(noABHeader.getText(), VercelConstants.NoAB_HEADER, "NO A/B Test header text" + Messages.MESSAGE_MATCH);
+    }
 
+    @Test
+    public void testBody (){
         WebElement noABBody = driver.findElement(By.cssSelector("div[class='example']>p"));
-        HelperMethods.logPrintMatch("No AB Test body text", noABBody.getText(), VercelConstants.NoAB_BODY);
+        //HelperMethods.logPrintMatch(noABBody.getText(), VercelConstants.NoAB_BODY, "No AB Test body text");
+        Assert.assertEquals(noABBody.getText(), VercelConstants.NoAB_BODY, "NO A/B Test body text" + Messages.MESSAGE_MATCH);
 
     }
 
-    public static void main(String[] args) {
-        WebDriver driver = WebDriverFactory.getDriver("chrome");
-        run(driver);
+    @BeforeClass
+    public void setUp(){
+
+    }
+
+    @BeforeMethod
+    public void setUpMethod(){
+        driver = WebDriverFactory.getDriver("chrome");
+        driver.manage().window().maximize();
+        driver.get(pageURL);
+    }
+
+    @AfterMethod
+    public void tearDownMethod(){
+        driver.quit();
+    }
+
+    @AfterClass
+    public void tearDown(){
     }
 }
