@@ -29,7 +29,7 @@ public class _10_DragAndDrop extends _$_VercelTestBase {
         Assert.assertEquals(boxes.get(1).getText(), "B", "Placement of B box after drag and drop" + MESSAGE_MATCH);
 
         Actions actions = new Actions(driver);
-        actions.dragAndDrop(boxes.get(0), boxes.get(1)).build().perform();
+        actions.dragAndDrop(boxes.get(0), boxes.get(1)).perform();
 
         boxes = driver.findElements(By.cssSelector("div[class='column']"));
         Assert.assertEquals(boxes.get(0).getText(), "B", "Placement of B box after drag and drop" + MESSAGE_MATCH);
@@ -45,6 +45,6 @@ public class _10_DragAndDrop extends _$_VercelTestBase {
 
     @AfterMethod
     public void tearDownMethod() {
-        //driver.quit();
+        driver.quit();
     }
 }
