@@ -1,5 +1,7 @@
 package com.loop.test.vercel;
 
+import com.loop.test.utilities.FileUtil;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -16,10 +18,10 @@ public class SimpleSwing {
         FILE
     }
 
-    public static void showImage(String urlActual, String filepathExpected){
+    public static void showImage(String filePathActual, String filepathExpected){
 
-        JLabel actualImage = createImage(ImageType.URL, urlActual);
-        JLabel expectedImage = createImage(ImageType.FILE, filepathExpected);
+        JLabel actualImage = createImage(filePathActual);
+        JLabel expectedImage = createImage(filepathExpected);
 
         JLabel actualText = new JLabel("Actual");
         JLabel expectedText = new JLabel("Expected");
@@ -47,39 +49,29 @@ public class SimpleSwing {
         frame.setVisible(true);
     }
 
-    public static JLabel createImage(ImageType type, String source){
+    public static JLabel createImage(String filePath){
         BufferedImage img = null;
 
-        switch(type){
-            case URL:
-                URL urlObject = null;
-                try{
-                    urlObject = new URL(source);
-                } catch (MalformedURLException e){
-                }
-                try {
-                    img = ImageIO.read(urlObject);
+        File fileObject = null;
+        fileObject = new File(filePath);
+        try {
+            img = ImageIO.read(fileObject);
 
-                } catch (IOException e) {
-                }
-                break;
-            case FILE:
-                File fileObject = null;
-                fileObject = new File(source);
-                try {
-                    img = ImageIO.read(fileObject);
-
-                } catch (IOException e) {
-                }
+        } catch (IOException e) {
         }
+
+
+
 
         return  new JLabel(new ImageIcon(img));
     }
 
     public static void main(String[] args) {
         String link = "https://loopcamp.vercel.app/img/avatar-blank.jpg";
-        String source = "src/com/loop/test/vercel/data/avatar-blank.jpg";
+        String filePathActual = FileUtil.downloadFile(link);
+        String filePathExpected = FileUtil.getExpectedFilePathFromURL(link);
 
-        showImage(link, source);
+        showImage(filePathActual, filePathExpected);
+        new File(filePathActual).delete();
     }
 }

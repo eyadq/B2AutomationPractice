@@ -2,7 +2,6 @@ package com.loop.test.vercel;
 
 import com.loop.test.utilities.FileUtil;
 import com.loop.test.utilities.LogUtil;
-import com.loop.test.utilities.constants.VercelConstants;
 import com.loop.test.utilities.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,14 +9,18 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.io.File;
 import java.util.List;
 
 import static org.testng.internal.Utils.log;
 
-public class _5_BrokenImages {
+public class _5_BrokenImages extends _$_VercelTestBase {
 
+    //Broken Images
+    public static final String BROKEN_IMAGES_ACTUAL_FILE_PATH = "src/com/loop/test/vercel/data/avatar-blank.jpg";
     WebDriver driver;
     public String pageURL = "https://loopcamp.vercel.app/broken-images.html";
+    String filePathActual;
 
     @Test
     public void testImages() {
@@ -32,13 +35,15 @@ public class _5_BrokenImages {
                 LogUtil.logPrintMatch(fileExtension, "jpg", "image " + count + " file type");
                 //Assert.assertNotEquals(fileExtension, "jpg", "image " + count + " file type");
             } else {
-                SimpleSwing.showImage(link, VercelConstants.BROKEN_IMAGES_ACTUAL_FILE_PATH);
 
-                String filePathActual = FileUtil.downloadFile(link);
+
+                filePathActual = FileUtil.downloadFile(link);
                 String checksumActual = FileUtil.getChecksum(filePathActual);
 
                 String filePathExpected = FileUtil.getExpectedFilePathFromURL(link);
                 String checksumExpected = FileUtil.getChecksum(filePathExpected);
+
+                SimpleSwing.showImage(filePathActual, filePathExpected);
 
                 Assert.assertEquals(checksumActual, checksumExpected, "checksum of image");
             }
@@ -63,6 +68,7 @@ public class _5_BrokenImages {
         @AfterMethod
         public void tearDownMethod () {
         driver.quit();
+        new File(filePathActual).delete();
         }
 
         @AfterClass

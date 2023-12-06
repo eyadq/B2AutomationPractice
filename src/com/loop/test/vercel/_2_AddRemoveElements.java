@@ -1,7 +1,5 @@
 package com.loop.test.vercel;
 
-import com.loop.test.utilities.constants.Messages;
-import com.loop.test.utilities.constants.VercelConstants;
 import com.loop.test.utilities.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -12,7 +10,7 @@ import org.testng.annotations.*;
 import java.util.List;
 import java.util.Random;
 
-public class _2_AddRemoveElements {
+public class _2_AddRemoveElements extends _$_VercelTestBase {
     WebDriver driver;
     String pageURL = "https://loopcamp.vercel.app/add-remove-elements.html";
 
@@ -26,11 +24,11 @@ public class _2_AddRemoveElements {
     public void testAddRemove(){
         WebElement addButton = driver.findElement(By.cssSelector("button[class='btn btn-primary'"));
         //HelperMethods.logPrintMatch(addButton.getText(), VercelConstants.ADD_REMOVE_ADD_BUTTON_TEXT, "Add button text");
-        Assert.assertEquals(addButton.getText(), VercelConstants.ADD_REMOVE_ADD_BUTTON_TEXT, "Add button text" + Messages.MESSAGE_MATCH);
+        Assert.assertEquals(addButton.getText(), _1_NoABTest$.ADD_REMOVE_ADD_BUTTON_TEXT, "Add button text" + _$_VercelTestBase.MESSAGE_MATCH);
 
         List<WebElement> deleteButtons = driver.findElements(By.cssSelector("button[class='added-manually btn btn-secondary']"));
         //HelperMethods.logPrintMatch(deleteButtons.size(), 0, "Number of delete buttons by default");
-        Assert.assertEquals(deleteButtons.size(), 0, "Number of delete buttons by default" + Messages.MESSAGE_MATCH);
+        Assert.assertEquals(deleteButtons.size(), 0, "Number of delete buttons by default" + _$_VercelTestBase.MESSAGE_MATCH);
 
         //want random number up to 10 but not zero going to add a random number of adds and click delete once
         Random random = new Random();
@@ -43,7 +41,7 @@ public class _2_AddRemoveElements {
         }
 
         //HelperMethods.logPrintMatch(deleteButtons.size(), numberOfTimesToClickAdd, "Number of delete buttons after clicking add " + numberOfTimesToClickAdd + " time(s)");
-        Assert.assertEquals(deleteButtons.size(), numberOfTimesToClickAdd, "Number of delete buttons after clicking add " + numberOfTimesToClickAdd + " time(s)" + Messages.MESSAGE_MATCH);
+        Assert.assertEquals(deleteButtons.size(), numberOfTimesToClickAdd, "Number of delete buttons after clicking add " + numberOfTimesToClickAdd + " time(s)" + _$_VercelTestBase.MESSAGE_MATCH);
 
         deleteButtons.get(random.nextInt(numberOfTimesToClickAdd)).click();
         deleteButtons = refreshDeleteButtons(driver);
@@ -56,7 +54,7 @@ public class _2_AddRemoveElements {
         }
 
         //HelperMethods.logPrintMatch(""+deleteButtons.size(), ""+(numberOfTimesToClickAdd - 1), "number of delete buttons left after 1 click");
-        Assert.assertEquals(deleteButtons.size(), numberOfTimesToClickAdd - 1, "number of delete buttons left after 1 click" + Messages.MESSAGE_MATCH);
+        Assert.assertEquals(deleteButtons.size(), numberOfTimesToClickAdd - 1, "number of delete buttons left after 1 click" + _$_VercelTestBase.MESSAGE_MATCH);
     }
 
 

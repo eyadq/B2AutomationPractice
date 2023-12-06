@@ -5,7 +5,7 @@
     <test name= "Vercel">
         <classes>
             <class name="com.loop.test.vercel._0_Home" />
-            <class name="com.loop.test.vercel._1_NoABTest" />
+            <class name="com.loop.test.vercel._1_NoABTest$" />
             <class name="com.loop.test.vercel._2_AddRemoveElements" />
             <class name="com.loop.test.vercel._3_Autocomplete" />
             <class name="com.loop.test.vercel._4_BasicAuth" />

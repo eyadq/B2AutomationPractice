@@ -6,7 +6,6 @@ public class LogUtil {
 
     public static void main(String[] args) {
         //HelperMethods.logPrintMatch("loop image link", "https://loopcamp.vercel.app/img/logo.svg", VercelConstants.IMAGE_URL_LOGO_LOOP);
-
     }
 
     public static void logPrintMatch(String actual, String expected, String message) {
@@ -29,7 +28,7 @@ public class LogUtil {
                 System.out.println("\t" + actual[i]);
             }
         } else {
-            output = "TEST PASSED => The actual " + message +  " does NOT match the expected " + message + ":";
+            output = "TEST FAILED => The actual " + message +  " does NOT match the expected " + message + ":";
             System.err.println(output);
             for (int i = 0; i < actual.length; i++) {
                 System.out.println("\tActual value: " + actual[i] + " does NOT match expected value: " + expected[i]);
