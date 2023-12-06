@@ -12,11 +12,11 @@ import java.util.Random;
 
 public class _0_Home extends _$_VercelTestBase {
 
-
-    //Main Page
-    public static final String MAIN_HEADER_TEST_AUTOMATION_PRACTICE = "Test Automation Practice";
-    public static final String MAIN_HEADER_AVAILABLE_EXAMPLES = "Available Examples";
-    public static final String HOME_BODY_CONTENT =
+    WebDriver driver;
+    String pageURL = "https://loopcamp.vercel.app/index.html";
+    public static final String HEADER_TEST_AUTOMATION_PRACTICE = "Test Automation Practice";
+    public static final String HEADER_AVAILABLE_EXAMPLES = "Available Examples";
+    public static final String PAGE_CONTENT =
             "A/B Testing\n" +
             "Add/Remove Elements\n" +
             "Autocomplete\n" +
@@ -118,15 +118,12 @@ public class _0_Home extends _$_VercelTestBase {
                     "\tTypos has link of https://loopcamp.vercel.app/typos.html\n" +
                     "\tWYSIWYG Editor has link of https://loopcamp.vercel.app/tinymce.html\n" +
                     "\tWeb Tables has link of https://loopcamp.vercel.app/web-tables.html";
-    WebDriver driver;
-    String pageURL = "https://loopcamp.vercel.app/index.html";
 
 
     @Test
     public void testHeaderImageLoop(){
         WebElement logoLoop = driver.findElement(By.xpath("//img[@src='./img/logo.svg']"));
         String imagePathLoopActual = logoLoop.getAttribute("src");;
-        //HelperMethods.logPrintMatch(imagePathLoopActual, VercelConstants.IMAGE_URL_LOGO_LOOP, "loop image link");
         Assert.assertEquals(imagePathLoopActual, IMAGE_URL_LOGO_LOOP, ":oop image link" + _$_VercelTestBase.MESSAGE_MATCH);
     }
 
@@ -134,29 +131,25 @@ public class _0_Home extends _$_VercelTestBase {
     public void testHeaderImageAcademy(){
         WebElement logoAcademy= driver.findElement(By.xpath("//img[@src='./img/logo-text.svg']"));
         String imagePathAcademyActual = logoAcademy.getAttribute("src");
-        //HelperMethods.logPrintMatch(imagePathAcademyActual, VercelConstants.IMAGE_URL_LOGO_ACADEMY, "academy image link");
         Assert.assertEquals(imagePathAcademyActual, IMAGE_URL_LOGO_ACADEMY, "Academy image link" + _$_VercelTestBase.MESSAGE_MATCH);
     }
 
     @Test
     public void testHeaderAutomationPractice(){
         WebElement testAutomationPractice = driver.findElement(By.cssSelector("span[class='h1y']"));
-        //HelperMethods.logPrintMatch(testAutomationPractice.getText(), VercelConstants.MAIN_HEADER_TEST_AUTOMATION_PRACTICE, "test automation practice header text");
-        Assert.assertEquals(testAutomationPractice.getText(), MAIN_HEADER_TEST_AUTOMATION_PRACTICE, "Test automation practice header text" + _$_VercelTestBase.MESSAGE_MATCH);
+        Assert.assertEquals(testAutomationPractice.getText(), HEADER_TEST_AUTOMATION_PRACTICE, "Test automation practice header text" + _$_VercelTestBase.MESSAGE_MATCH);
     }
 
     @Test
     public void testHeaderAvailableExamples(){
         WebElement availableExamples = driver.findElement(By.cssSelector("span[class='h2 mb-4']"));
-        //HelperMethods.logPrintMatch(availableExamples.getText(), VercelConstants.MAIN_HEADER_AVAILABLE_EXAMPLES, "available practice header text");
-        Assert.assertEquals(availableExamples.getText(), MAIN_HEADER_AVAILABLE_EXAMPLES,  "Available practice header text" + _$_VercelTestBase.MESSAGE_MATCH);
+        Assert.assertEquals(availableExamples.getText(), HEADER_AVAILABLE_EXAMPLES,  "Available practice header text" + _$_VercelTestBase.MESSAGE_MATCH);
     }
 
     @Test
     public void testBodyContent(){
         WebElement unorderedList = driver.findElement(By.cssSelector("ul[class='list-group list-group-flush']"));
-        //HelperMethods.logPrintMatch(unorderedList.getText(), VercelConstantsLong.HOME_BODY_CONTENT, "Text of home page content");
-        Assert.assertEquals(unorderedList.getText(), HOME_BODY_CONTENT, "Text of home page content" + _$_VercelTestBase.MESSAGE_MATCH);
+        Assert.assertEquals(unorderedList.getText(), PAGE_CONTENT, "Text of home page content" + _$_VercelTestBase.MESSAGE_MATCH);
     }
 
     @Test
@@ -175,7 +168,6 @@ public class _0_Home extends _$_VercelTestBase {
             itemLinks.get(number).click();
 
             String actualURL = driver.getCurrentUrl();
-            //HelperMethods.logPrintMatch(actualURL, expectedURL, "Link of item clicked on randomly");
             Assert.assertEquals(actualURL, expectedURL);
 
 
@@ -184,7 +176,6 @@ public class _0_Home extends _$_VercelTestBase {
     @Test
     public void testFooterImageText () {
         WebElement poweredByLoopcamp = driver.findElement(By.cssSelector("div[style='text-align: center;margin-bottom: 40px']"));
-        //HelperMethods.logPrintMatch(poweredByLoopcamp.getText(), VercelConstants.MAIN_FOOTER_POWERED_BY_LOOPCAMP, "powered by loopcamp footer text");
         Assert.assertEquals(poweredByLoopcamp.getText(), MAIN_FOOTER_POWERED_BY_LOOPCAMP, "Powered by loopcamp footer text" + _$_VercelTestBase.MESSAGE_MATCH);
     }
 
@@ -195,7 +186,7 @@ public class _0_Home extends _$_VercelTestBase {
 
     @BeforeMethod
     public void setUpMethod(){
-        driver = WebDriverFactory.getDriver("chrome");
+        driver = WebDriverFactory.getDriver(BROWSER);
         driver.manage().window().maximize();
         driver.get(pageURL);
     }

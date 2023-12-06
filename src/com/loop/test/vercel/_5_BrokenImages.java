@@ -16,8 +16,6 @@ import static org.testng.internal.Utils.log;
 
 public class _5_BrokenImages extends _$_VercelTestBase {
 
-    //Broken Images
-    public static final String BROKEN_IMAGES_ACTUAL_FILE_PATH = "src/com/loop/test/vercel/data/avatar-blank.jpg";
     WebDriver driver;
     public String pageURL = "https://loopcamp.vercel.app/broken-images.html";
     String filePathActual;
@@ -60,7 +58,7 @@ public class _5_BrokenImages extends _$_VercelTestBase {
 
         @BeforeMethod
         public void setUpMethod () {
-            driver = WebDriverFactory.getDriver("chrome");
+            driver = WebDriverFactory.getDriver(BROWSER);
             driver.manage().window().maximize();
             driver.get(pageURL);
         }

@@ -14,19 +14,17 @@ public class _21_ForgotPassword extends _$_VercelTestBase {
 
     WebDriver driver;
     public String pageURL = "https://loopcamp.vercel.app/forgot-password.html";
-    public static final String FORGOT_PASSWORD_HEADER = "Forgot Password";
+    public static final String HEADER_TEXT = "Forgot Password";
     public static final String EMAIL_TEXT = "E-mail";
     public static final String EMAIL_INPUT_ID = "email";
     public static final String RETRIEVE_PASSWORD_BUTTON_TEXT = "Retrieve password";
-    public static final String EMAIL_VALID = "jdoe@gmail.com";
-    public static final String EMAIL_INVALID = "jdoegmail.com";
     public static final String ERROR_MESSAGE = "Invalid email";
 
 
     @Test
     public void testHeader(){
         WebElement forgotPasswordHeader = driver.findElement(By.tagName("h2"));
-        Assert.assertEquals(forgotPasswordHeader.getText(), FORGOT_PASSWORD_HEADER, "Forgot password header text" + MESSAGE_MATCH);
+        Assert.assertEquals(forgotPasswordHeader.getText(), HEADER_TEXT, "Forgot password header text" + MESSAGE_MATCH);
     }
 
     @Test
@@ -64,13 +62,13 @@ public class _21_ForgotPassword extends _$_VercelTestBase {
 
     @BeforeMethod
     public void setUpMethod(){
-        driver = WebDriverFactory.getDriver("chrome");
+        driver = WebDriverFactory.getDriver(BROWSER);
         driver.manage().window().maximize();
         driver.get(pageURL);
     }
 
     @AfterMethod
     public void tearDownMethod(){
-        //driver.quit();
+        driver.quit();
     }
 }

@@ -10,14 +10,15 @@ import java.util.List;
 
 public class _8_ContextMenu extends _$_VercelTestBase {
 
-    //ContextMenus
+    WebDriver driver;
+    public String pageURL = "https://loopcamp.vercel.app/context-menu.html";
+    public String BROWSER = "firefox";
     public static final String CONTEXT_MENU_HEADER = "Context Menu";
     public static final String[] CONTEXT_MENU_PARAGRAPHS = {
             "Context menu items are custom additions that appear in the right-click menu.",
             "Right-click in the box below to see one called 'the-internet'. When you click it, it will trigger a JavaScript alert."
             };
-    WebDriver driver;
-    public String pageURL = "https://loopcamp.vercel.app/context-menu.html";
+
 
     @Test
     public void testText(){
@@ -36,12 +37,10 @@ public class _8_ContextMenu extends _$_VercelTestBase {
     @Test
     public void testContextMenu() throws InterruptedException {
         WebElement theBoxThing = driver.findElement(By.cssSelector("div[id='hot-spot']"));
-        //System.out.println(theBoxThing.getAttribute("contextmenu"));
         Actions action = new Actions(driver);
         action.contextClick(theBoxThing).perform();
 
         Alert alert = driver.switchTo().alert();
-        System.out.println(alert.getText());
         alert.accept();
 
 
@@ -54,14 +53,14 @@ public class _8_ContextMenu extends _$_VercelTestBase {
 
     @BeforeMethod
     public void setUpMethod(){
-        driver = WebDriverFactory.getDriver("firefox");
+        driver = WebDriverFactory.getDriver(BROWSER);
         driver.manage().window().maximize();
         driver.get(pageURL);
     }
 
     @AfterMethod
     public void tearDownMethod(){
-        //driver.quit();
+        driver.quit();
     }
 
     @AfterClass
