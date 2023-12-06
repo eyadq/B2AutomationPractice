@@ -1,6 +1,5 @@
 package com.loop.test.vercel;
 
-import com.loop.test.utilities.constants.VercelConstants;
 import com.loop.test.utilities.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -12,8 +11,15 @@ import org.testng.annotations.*;
 import java.time.Duration;
 import java.util.List;
 
-public class _3_Autocomplete {
+public class _3_Autocomplete extends _$_VercelTestBase {
 
+    //Autocomplete
+    public static final String AUTOCOMPLETE_HEADER = "Autocomplete";
+    public static final String AUTOCOMPLETE_PARAGRAPH = "Start typing:";
+    public static final String AUTOCOMPLETE_PLACEHOLDER_COUNTRY = "Country";
+    public static final String AUTOCOMPLETE_OPTIONS_SINGLE = "Palestine";
+    public static final String AUTOCOMPLETE_LOGGED_RESULT = "You selected: Palestine";
+    public static final String[] AUTOCOMPLETE_OPTIONS_MULTIPLE = {"United Arab Emirates", "United Kingdom", "United States of America"};
     WebDriver driver;
     static String pageURL = "https://loopcamp.vercel.app/autocomplete.html";
 
@@ -21,14 +27,14 @@ public class _3_Autocomplete {
     public void testHeader(){
         WebElement header = driver.findElement(By.tagName("h3"));
         //HelperMethods.logPrintMatch(header.getText(), VercelConstants.AUTOCOMPLETE_HEADER, "Autocomplete header text");
-        Assert.assertEquals(header.getText(), VercelConstants.AUTOCOMPLETE_HEADER, "Autocomplete header text");
+        Assert.assertEquals(header.getText(), AUTOCOMPLETE_HEADER, "Autocomplete header text");
     }
 
     @Test
     public void testParagraph (){
         WebElement paragraph = driver.findElement(By.xpath("//p[text()='Start typing:']"));
         //HelperMethods.logPrintMatch(paragraph.getText(), VercelConstants.AUTOCOMPLETE_PARAGRAPH, "Autocomplete parapgraph text");
-        Assert.assertEquals(paragraph.getText(), VercelConstants.AUTOCOMPLETE_PARAGRAPH, "Autocomplete parapgraph text");
+        Assert.assertEquals(paragraph.getText(), AUTOCOMPLETE_PARAGRAPH, "Autocomplete parapgraph text");
     }
     @Test
     public void run(){
@@ -36,7 +42,7 @@ public class _3_Autocomplete {
 
         WebElement input = driver.findElement(By.id("myCountry"));
         //HelperMethods.logPrintMatch(input.getAttribute("placeholder"), VercelConstants.AUTOCOMPLETE_PLACEHOLDER_COUNTRY, "placeholder text for input");
-        Assert.assertEquals(input.getAttribute("placeholder"), VercelConstants.AUTOCOMPLETE_PLACEHOLDER_COUNTRY, "placeholder text for input");
+        Assert.assertEquals(input.getAttribute("placeholder"), AUTOCOMPLETE_PLACEHOLDER_COUNTRY, "placeholder text for input");
 
         WebElement autocompleteList;
         autocompleteList = refreshAutoCompleteList(driver);
@@ -48,7 +54,7 @@ public class _3_Autocomplete {
         Assert.assertEquals(listItems.size(), 1, "Invalid country search returned results");
         if(listItems.size() == 1){
             //HelperMethods.logPrintMatch(listItems.get(0).getText(), VercelConstants.AUTOCOMPLETE_OPTIONS_SINGLE, "Autocomplete options");
-            Assert.assertEquals(listItems.get(0).getText(), VercelConstants.AUTOCOMPLETE_OPTIONS_SINGLE, "Autocomplete options");
+            Assert.assertEquals(listItems.get(0).getText(), AUTOCOMPLETE_OPTIONS_SINGLE, "Autocomplete options");
         } else { //TODO: Get rid of print statement outright
             System.err.println("TEST FAILED => Instead of single autocomplete option \"Palestine\", there are " + listItems.size() + " options");
             if(listItems.size() !=0){
@@ -68,7 +74,7 @@ public class _3_Autocomplete {
         WebElement result = driver.findElement(By.cssSelector("p[id='result']"));
 
         //HelperMethods.logPrintMatch(result.getText(), VercelConstants.AUTOCOMPLETE_LOGGED_RESULT, "Log after clicking submit");
-        Assert.assertEquals(result.getText(), VercelConstants.AUTOCOMPLETE_LOGGED_RESULT, "Log after clicking submit");
+        Assert.assertEquals(result.getText(), AUTOCOMPLETE_LOGGED_RESULT, "Log after clicking submit");
 
 
         listItems = sendText("united", input, driver);
@@ -77,7 +83,7 @@ public class _3_Autocomplete {
             actualItems[i] = listItems.get(i).getText();
         }
         //HelperMethods.logPrintMatch(actualItems, VercelConstants.AUTOCOMPLETE_OPTIONS_MULTIPLE, "Autocomplete options");
-        Assert.assertEquals(actualItems, VercelConstants.AUTOCOMPLETE_OPTIONS_MULTIPLE, "Autocomplete options");
+        Assert.assertEquals(actualItems, AUTOCOMPLETE_OPTIONS_MULTIPLE, "Autocomplete options");
 
         driver.quit();
 
