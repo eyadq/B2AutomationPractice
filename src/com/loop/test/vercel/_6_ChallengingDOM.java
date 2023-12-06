@@ -21,7 +21,7 @@ public class _6_ChallengingDOM extends _$_VercelTestBase {
 
     @BeforeMethod
     public void setUpMethod(){
-        driver = WebDriverFactory.getDriver("chrome");
+        driver = WebDriverFactory.getDriver(BROWSER);
         driver.manage().window().maximize();
         driver.get(pageURL);
     }

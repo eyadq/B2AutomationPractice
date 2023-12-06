@@ -11,20 +11,23 @@ import java.util.List;
 import java.util.Random;
 
 public class _2_AddRemoveElements extends _$_VercelTestBase {
+
     WebDriver driver;
     String pageURL = "https://loopcamp.vercel.app/add-remove-elements.html";
+    public static final String HEADER_TEXT = "Add/Remove Elements";
+    public static final String BUTTON_TEXT = "Add Element";
 
     @Test
     public void testHeader(){
         WebElement addRemoveHeader = driver.findElement(By.tagName("h3"));
-        //HelperMethods.logPrintMatch(addRemoveHeader.getText(), VercelConstants.ADD_REMOVE_HEADER, "Add Remove Header text");
+        Assert.assertEquals(addRemoveHeader.getText(), HEADER_TEXT, "Add Remove Header text");
     }
 
     @Test
     public void testAddRemove(){
         WebElement addButton = driver.findElement(By.cssSelector("button[class='btn btn-primary'"));
         //HelperMethods.logPrintMatch(addButton.getText(), VercelConstants.ADD_REMOVE_ADD_BUTTON_TEXT, "Add button text");
-        Assert.assertEquals(addButton.getText(), _1_NoABTest$.ADD_REMOVE_ADD_BUTTON_TEXT, "Add button text" + _$_VercelTestBase.MESSAGE_MATCH);
+        Assert.assertEquals(addButton.getText(), BUTTON_TEXT, "Add button text" + _$_VercelTestBase.MESSAGE_MATCH);
 
         List<WebElement> deleteButtons = driver.findElements(By.cssSelector("button[class='added-manually btn btn-secondary']"));
         //HelperMethods.logPrintMatch(deleteButtons.size(), 0, "Number of delete buttons by default");
@@ -74,7 +77,7 @@ public class _2_AddRemoveElements extends _$_VercelTestBase {
 
     @BeforeMethod
     public void setUpMethod(){
-        driver = WebDriverFactory.getDriver("chrome");
+        driver = WebDriverFactory.getDriver(BROWSER);
         driver.manage().window().maximize();
         driver.get(pageURL);
     }
