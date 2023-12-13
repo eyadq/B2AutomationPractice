@@ -18,6 +18,14 @@ public class _$_VercelTestBase {
 
     public static final String MAIN_FOOTER_POWERED_BY_LOOPCAMP = "Powered by LOOPCAMP";
 
+    enum Browser{
+        FIREFOX,
+        CHROME,
+        SAFARI,
+        EDGE
+
+    }
+
 
     @BeforeMethod
     public void setUpMethod(){
