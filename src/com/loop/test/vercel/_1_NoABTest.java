@@ -10,13 +10,11 @@ import org.testng.annotations.*;
 public class _1_NoABTest extends _$_VercelTestBase {
 
 
-    //No A/B Test
+    WebDriver driver;
+    String pageURL = ("https://loopcamp.vercel.app/ab-test.html");
     public static final String HEADER_TEXT = "No A/B Test";
     public static final String PARAGRAPH_TEXT = "Also known as split testing. This is a way in which businesses are able to simultaneously test and learn from different versions of a page to see which text and/or functionality works best towards a desired outcome (e.g. a user action such as a click-through).";
-    WebDriver driver;
 
-
-     String pageURL = ("https://loopcamp.vercel.app/ab-test.html");
 
 
     @Test
