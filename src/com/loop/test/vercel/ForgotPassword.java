@@ -10,30 +10,35 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class _21_ForgotPassword extends _$_VercelTestBase {
+public class ForgotPassword extends VercelTestBase {
 
-    WebDriver driver;
-    public String pageURL = "https://loopcamp.vercel.app/forgot-password.html";
-    public static final String HEADER_TEXT = "Forgot Password";
-    public static final String EMAIL_TEXT = "E-mail";
-    public static final String EMAIL_INPUT_ID = "email";
-    public static final String RETRIEVE_PASSWORD_BUTTON_TEXT = "Retrieve password";
-    public static final String ERROR_MESSAGE = "Invalid email";
+    private static final String pageURL = "https://loopcamp.vercel.app/forgot-password.html";
+    private static final String HEADER_TEXT = "Forgot Password";
+    private static final String EMAIL_TEXT = "E-mail";
+    private static final String EMAIL_INPUT_ID = "email";
+    private static final String RETRIEVE_PASSWORD_BUTTON_TEXT = "Retrieve password";
+    private static final String ERROR_MESSAGE = "Invalid email";
 
 
     @Test
     public void testHeader(){
+        driver.get(pageURL);
+
         WebElement forgotPasswordHeader = driver.findElement(By.tagName("h2"));
         Assert.assertEquals(forgotPasswordHeader.getText(), HEADER_TEXT, "Forgot password header text" + MESSAGE_MATCH);
     }
 
     @Test
     public void testParagraph(){
+        driver.get(pageURL);
+
         WebElement emailLabel = driver.findElement(By.cssSelector("label[for='email']"));
         Assert.assertEquals(emailLabel.getText(), EMAIL_TEXT, "Email label text" + MESSAGE_MATCH);
     }
     @Test
     public void testFieldAndButton(){
+        driver.get(pageURL);
+
         WebElement emailInput = driver.findElement(By.cssSelector("input[name='email']"));
         Assert.assertEquals(emailInput.getAttribute("id"), EMAIL_INPUT_ID, "Email input attribute" + MESSAGE_MATCH);
 
@@ -58,17 +63,5 @@ public class _21_ForgotPassword extends _$_VercelTestBase {
         } finally {
             Assert.assertTrue(errorMessageGone, "Error message did not go away after inputting valid text");
         }
-    }
-
-    @BeforeMethod
-    public void setUpMethod(){
-        driver = WebDriverFactory.getDriver(BROWSER);
-        driver.manage().window().maximize();
-        driver.get(pageURL);
-    }
-
-    @AfterMethod
-    public void tearDownMethod(){
-        driver.quit();
     }
 }

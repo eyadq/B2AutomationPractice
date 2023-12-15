@@ -1,6 +1,6 @@
 package com.loop.test.utilities;
 
-import com.loop.test.vercel._$_VercelTestBase;
+import com.loop.test.vercel.VercelTestBase;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class FileUtil {
     public static String downloadFile(String link){
         String fileExtension = link.substring(link.lastIndexOf('.'));
         String fileNameActual = link.substring(link.lastIndexOf('/')+1 , link.lastIndexOf('.')) + "-actual";
-        String filePath = _$_VercelTestBase.MAIN_BINARY_RESOURCE_DIR + fileNameActual + fileExtension;
+        String filePath = VercelTestBase.MAIN_BINARY_RESOURCE_DIR + fileNameActual + fileExtension;
 
         URL urlObject;
         URI uriObject;
@@ -63,7 +63,7 @@ public class FileUtil {
     public static String getExpectedFilePathFromURL(String link){
         String fileExtension = link.substring(link.lastIndexOf('.'));
         String fileName = link.substring(link.lastIndexOf('/')+1 , link.lastIndexOf('.'));
-        return _$_VercelTestBase.MAIN_BINARY_RESOURCE_DIR + fileName + fileExtension;
+        return VercelTestBase.MAIN_BINARY_RESOURCE_DIR + fileName + fileExtension;
     }
 
     public static String getChecksum(String filePath){

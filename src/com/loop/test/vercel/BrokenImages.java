@@ -14,14 +14,14 @@ import java.util.List;
 
 import static org.testng.internal.Utils.log;
 
-public class _5_BrokenImages extends _$_VercelTestBase {
+public class BrokenImages extends VercelTestBase {
 
-    WebDriver driver;
-    public String pageURL = "https://loopcamp.vercel.app/broken-images.html";
-    String filePathActual;
+    private static final String pageURL = "https://loopcamp.vercel.app/broken-images.html";
+    String filePathActual; //Determined in code
 
     @Test
     public void testImages() {
+        driver.get(pageURL);
         WebElement imageContainer = driver.findElement(By.xpath("//div[@class='example']"));
         List<WebElement> images = imageContainer.findElements(By.tagName("img"));
 
@@ -50,28 +50,6 @@ public class _5_BrokenImages extends _$_VercelTestBase {
         }
 
     }
-
-        @BeforeClass
-        public void setUp () {
-
-        }
-
-        @BeforeMethod
-        public void setUpMethod () {
-            driver = WebDriverFactory.getDriver(BROWSER);
-            driver.manage().window().maximize();
-            driver.get(pageURL);
-        }
-
-        @AfterMethod
-        public void tearDownMethod () {
-        driver.quit();
-        new File(filePathActual).delete();
-        }
-
-        @AfterClass
-        public void tearDown () {
-        }
 
 
 }

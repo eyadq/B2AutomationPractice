@@ -11,30 +11,32 @@ import org.testng.annotations.*;
 import java.time.Duration;
 import java.util.List;
 
-public class _3_Autocomplete extends _$_VercelTestBase {
+public class Autocomplete extends VercelTestBase {
 
-    WebDriver driver;
-    static String pageURL = "https://loopcamp.vercel.app/autocomplete.html";
-    public static final String HEADER_TEXT = "Autocomplete";
-    public static final String PARAGRAPH_TEXT = "Start typing:";
-    public static final String PLACEHOLDER_TEXT = "Country";
-    public static final String[] AUTOCOMPLETE_OPTIONS_SINGLE = {"Palestine"};
-    public static final String[] AUTOCOMPLETE_OPTIONS_MULTIPLE = {"United Arab Emirates", "United Kingdom", "United States of America"};
-    public static final String LOGGED_RESULT = "You selected: Palestine";
+    private static final String pageURL = "https://loopcamp.vercel.app/autocomplete.html";
+    private static final String HEADER_TEXT = "Autocomplete";
+    private static final String PARAGRAPH_TEXT = "Start typing:";
+    private static final String PLACEHOLDER_TEXT = "Country";
+    private static final String[] AUTOCOMPLETE_OPTIONS_SINGLE = {"Palestine"};
+    private static final String[] AUTOCOMPLETE_OPTIONS_MULTIPLE = {"United Arab Emirates", "United Kingdom", "United States of America"};
+    private static final String LOGGED_RESULT = "You selected: Palestine";
 
     @Test
     public void testHeader(){
+        driver.get(pageURL);
         WebElement header = driver.findElement(By.tagName("h3"));
         Assert.assertEquals(header.getText(), HEADER_TEXT, "Autocomplete header text");
     }
 
     @Test
     public void testParagraph (){
+        driver.get(pageURL);
         WebElement paragraph = driver.findElement(By.xpath("//p[text()='Start typing:']"));
         Assert.assertEquals(paragraph.getText(), PARAGRAPH_TEXT, "Autocomplete parapgraph text");
     }
     @Test
     public void testAutocomplete(){
+        driver.get(pageURL);
         WebElement input = driver.findElement(By.id("myCountry"));
         Assert.assertEquals(input.getAttribute("placeholder"), PLACEHOLDER_TEXT, "placeholder text for input");
 
@@ -91,24 +93,4 @@ public class _3_Autocomplete extends _$_VercelTestBase {
         return autocompleteList.findElements(By.tagName("div"));
     }
 
-    @BeforeClass
-    public void setUp(){
-
-    }
-
-    @BeforeMethod
-    public void setUpMethod(){
-        driver = WebDriverFactory.getDriver(BROWSER);
-        driver.manage().window().maximize();
-        driver.get(pageURL);
-    }
-
-    @AfterMethod
-    public void tearDownMethod(){
-        driver.quit();
-    }
-
-    @AfterClass
-    public void tearDown(){
-    }
 }

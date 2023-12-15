@@ -4,17 +4,21 @@
 <suite name= "All">
     <test name= "Vercel">
         <classes>
-            <class name="com.loop.test.vercel._0_Home" />
-            <class name="com.loop.test.vercel._1_NoABTest" />
-            <class name="com.loop.test.vercel._2_AddRemoveElements" />
-            <class name="com.loop.test.vercel._3_Autocomplete" />
-            <class name="com.loop.test.vercel._4_BasicAuth" />
-            <class name="com.loop.test.vercel._5_BrokenImages" />
-            <class name="com.loop.test.vercel._6_ChallengingDOM" />
-            <class name="com.loop.test.vercel._7_Checkboxes" />
-            <class name="com.loop.test.vercel._8_ContextMenu" />
-            <class name="com.loop.test.vercel._9_DisappearingElements" />
-            <class name="com.loop.test.vercel._21_ForgotPassword" />
+            <class name="com.loop.test.vercel.Home" />
+            <class name="com.loop.test.vercel.NoABTest" />
+            <class name="com.loop.test.vercel.AddRemoveElements" />
+            <class name="com.loop.test.vercel.Autocomplete" />
+            <class name="com.loop.test.vercel.BasicAuth" />
+            <class name="com.loop.test.vercel.BrokenImages" />
+            <class name="com.loop.test.vercel.ChallengingDOM" />
+            <class name="com.loop.test.vercel.Checkboxes" />
+            <class name="com.loop.test.vercel.ContextMenu" />
+            <class name="com.loop.test.vercel.DisappearingElements" />
+            <class name="com.loop.test.vercel.DragAndDrop" />
+            <class name="com.loop.test.vercel.DragAndDropCircles" />
+            <class name="com.loop.test.vercel.Dropdown" />
+            <class name="com.loop.test.vercel.DynamicContent" />
+            <class name="com.loop.test.vercel.ForgotPassword" />
         </classes>
 
     </test>

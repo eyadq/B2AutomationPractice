@@ -10,28 +10,29 @@ import org.testng.annotations.*;
 import java.util.List;
 import java.util.Random;
 
-public class _2_AddRemoveElements extends _$_VercelTestBase {
+public class AddRemoveElements extends VercelTestBase {
 
-    WebDriver driver;
-    String pageURL = "https://loopcamp.vercel.app/add-remove-elements.html";
-    public static final String HEADER_TEXT = "Add/Remove Elements";
-    public static final String BUTTON_TEXT = "Add Element";
+    private static final String pageURL = "https://loopcamp.vercel.app/add-remove-elements.html";
+    private static final String HEADER_TEXT = "Add/Remove Elements";
+    private static final String BUTTON_TEXT = "Add Element";
 
     @Test
     public void testHeader(){
+        driver.get(pageURL);
         WebElement addRemoveHeader = driver.findElement(By.tagName("h3"));
         Assert.assertEquals(addRemoveHeader.getText(), HEADER_TEXT, "Add Remove Header text");
     }
 
     @Test
     public void testAddRemove(){
+        driver.get(pageURL);
         WebElement addButton = driver.findElement(By.cssSelector("button[class='btn btn-primary'"));
         //HelperMethods.logPrintMatch(addButton.getText(), VercelConstants.ADD_REMOVE_ADD_BUTTON_TEXT, "Add button text");
-        Assert.assertEquals(addButton.getText(), BUTTON_TEXT, "Add button text" + _$_VercelTestBase.MESSAGE_MATCH);
+        Assert.assertEquals(addButton.getText(), BUTTON_TEXT, "Add button text" + VercelTestBase.MESSAGE_MATCH);
 
         List<WebElement> deleteButtons = driver.findElements(By.cssSelector("button[class='added-manually btn btn-secondary']"));
         //HelperMethods.logPrintMatch(deleteButtons.size(), 0, "Number of delete buttons by default");
-        Assert.assertEquals(deleteButtons.size(), 0, "Number of delete buttons by default" + _$_VercelTestBase.MESSAGE_MATCH);
+        Assert.assertEquals(deleteButtons.size(), 0, "Number of delete buttons by default" + VercelTestBase.MESSAGE_MATCH);
 
         //want random number up to 10 but not zero going to add a random number of adds and click delete once
         Random random = new Random();
@@ -44,7 +45,7 @@ public class _2_AddRemoveElements extends _$_VercelTestBase {
         }
 
         //HelperMethods.logPrintMatch(deleteButtons.size(), numberOfTimesToClickAdd, "Number of delete buttons after clicking add " + numberOfTimesToClickAdd + " time(s)");
-        Assert.assertEquals(deleteButtons.size(), numberOfTimesToClickAdd, "Number of delete buttons after clicking add " + numberOfTimesToClickAdd + " time(s)" + _$_VercelTestBase.MESSAGE_MATCH);
+        Assert.assertEquals(deleteButtons.size(), numberOfTimesToClickAdd, "Number of delete buttons after clicking add " + numberOfTimesToClickAdd + " time(s)" + VercelTestBase.MESSAGE_MATCH);
 
         deleteButtons.get(random.nextInt(numberOfTimesToClickAdd)).click();
         deleteButtons = refreshDeleteButtons(driver);
@@ -57,7 +58,7 @@ public class _2_AddRemoveElements extends _$_VercelTestBase {
         }
 
         //HelperMethods.logPrintMatch(""+deleteButtons.size(), ""+(numberOfTimesToClickAdd - 1), "number of delete buttons left after 1 click");
-        Assert.assertEquals(deleteButtons.size(), numberOfTimesToClickAdd - 1, "number of delete buttons left after 1 click" + _$_VercelTestBase.MESSAGE_MATCH);
+        Assert.assertEquals(deleteButtons.size(), numberOfTimesToClickAdd - 1, "number of delete buttons left after 1 click" + VercelTestBase.MESSAGE_MATCH);
     }
 
 
@@ -68,26 +69,5 @@ public class _2_AddRemoveElements extends _$_VercelTestBase {
 
     public static List<WebElement> refreshDeleteButtons(WebDriver driver){
         return driver.findElements(By.cssSelector("button[class='added-manually btn btn-secondary']"));
-    }
-
-    @BeforeClass
-    public void setUp(){
-
-    }
-
-    @BeforeMethod
-    public void setUpMethod(){
-        driver = WebDriverFactory.getDriver(BROWSER);
-        driver.manage().window().maximize();
-        driver.get(pageURL);
-    }
-
-    @AfterMethod
-    public void tearDownMethod(){
-        driver.quit();
-    }
-
-    @AfterClass
-    public void tearDown(){
     }
 }
