@@ -9,21 +9,21 @@ import org.testng.annotations.*;
 
 import java.util.List;
 
-public class _9_DisappearingElements extends _$_VercelTestBase {
+public class DisappearingElements extends VercelTestBase {
 
-    WebDriver driver;
-    public String pageURL = "https://loopcamp.vercel.app/disappearing-elements.html";
-
-    public static final String HEADER_TEXT = "Disappearing Elements";
-    public static final String PARAGRAPH_TEXT = "This example demonstrates when elements on a page change by disappearing/reappearing on each page load.";
-    public static final String HOME = "https://loopcamp.vercel.app/index.html";
-    public static final String ABOUT = "https://loopcamp.vercel.app/about/index.html";
-    public static final String CONTACT_US = "https://loopcamp.vercel.app/contact-us/index.html";
-    public static final String PORTFOLIO = "https://loopcamp.vercel.app/portfolio/index.html";
-    public static final String GALLERY = "https://loopcamp.vercel.app/gallery/index.html";
+    private static final String pageURL = "https://loopcamp.vercel.app/disappearing-elements.html";
+    private static final String HEADER_TEXT = "Disappearing Elements";
+    private static final String PARAGRAPH_TEXT = "This example demonstrates when elements on a page change by disappearing/reappearing on each page load.";
+    private static final String HOME = "https://loopcamp.vercel.app/index.html";
+    private static final String ABOUT = "https://loopcamp.vercel.app/about/index.html";
+    private static final String CONTACT_US = "https://loopcamp.vercel.app/contact-us/index.html";
+    private static final String PORTFOLIO = "https://loopcamp.vercel.app/portfolio/index.html";
+    private static final String GALLERY = "https://loopcamp.vercel.app/gallery/index.html";
 
     @Test
     public void testText(){
+        driver.get(pageURL);
+
         WebElement header = driver.findElement(By.tagName("h3"));
         Assert.assertEquals(header.getText(), HEADER_TEXT, "Text of header" + MESSAGE_MATCH);
 
@@ -33,6 +33,8 @@ public class _9_DisappearingElements extends _$_VercelTestBase {
 
     @Test
     public void testDisappearingElements(){
+        driver.get(pageURL);
+
         List<WebElement> buttons = driver.findElements(By.xpath("//li[@class='random-item']//a"));
 
         for (WebElement button : buttons){
@@ -55,17 +57,5 @@ public class _9_DisappearingElements extends _$_VercelTestBase {
             }
         }
 
-    }
-
-    @BeforeMethod
-    public void setUpMethod() {
-        driver = WebDriverFactory.getDriver(BROWSER);
-        driver.manage().window().maximize();
-        driver.get(pageURL);
-    }
-
-    @AfterMethod
-    public void tearDownMethod() {
-        driver.quit();
     }
 }

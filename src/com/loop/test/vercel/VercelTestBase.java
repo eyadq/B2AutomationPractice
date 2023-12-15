@@ -4,10 +4,11 @@ import com.loop.test.utilities.WebDriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
 
-public class _$_VercelTestBase {
+public class VercelTestBase {
 
     WebDriver driver;
-    public String pageURL = "";
+
+
     public String BROWSER = "chrome";
     public static final String MESSAGE_MATCH = " actual value did not match the expected";
     public static final String MAIN_BINARY_RESOURCE_DIR = "resources/";
@@ -31,7 +32,6 @@ public class _$_VercelTestBase {
     public void setUpMethod(){
         driver = WebDriverFactory.getDriver(BROWSER);
         driver.manage().window().maximize();
-        driver.get(pageURL);
     }
 
     @AfterMethod

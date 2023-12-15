@@ -10,13 +10,12 @@ import org.testng.annotations.*;
 import java.util.List;
 import java.util.Random;
 
-public class _0_Home extends _$_VercelTestBase {
+public class Home extends VercelTestBase {
 
-    WebDriver driver;
-    String pageURL = "https://loopcamp.vercel.app/index.html";
-    public static final String HEADER_TEST_AUTOMATION_PRACTICE = "Test Automation Practice";
-    public static final String HEADER_AVAILABLE_EXAMPLES = "Available Examples";
-    public static final String PAGE_CONTENT =
+    private static final String pageURL = "https://loopcamp.vercel.app/index.html";
+    private static final String HEADER_TEST_AUTOMATION_PRACTICE = "Test Automation Practice";
+    private static final String HEADER_AVAILABLE_EXAMPLES = "Available Examples";
+    private static final String PAGE_CONTENT =
             "A/B Testing\n" +
             "Add/Remove Elements\n" +
             "Autocomplete\n" +
@@ -67,7 +66,7 @@ public class _0_Home extends _$_VercelTestBase {
             "Typos\n" +
             "WYSIWYG Editor\n" +
             "Web Tables";
-    public static final String HOME_LINKS =
+    private static final String HOME_LINKS =
                     "\n\tA/B Testing has link of https://loopcamp.vercel.app/ab-test.html\n" +
                     "\tAdd/Remove Elements has link of https://loopcamp.vercel.app/add-remove-elements.html\n" +
                     "\tAutocomplete has link of https://loopcamp.vercel.app/autocomplete.html\n" +
@@ -118,49 +117,59 @@ public class _0_Home extends _$_VercelTestBase {
                     "\tTypos has link of https://loopcamp.vercel.app/typos.html\n" +
                     "\tWYSIWYG Editor has link of https://loopcamp.vercel.app/tinymce.html\n" +
                     "\tWeb Tables has link of https://loopcamp.vercel.app/web-tables.html";
-
-
     @Test
     public void testHeaderImageLoop(){
+        driver.get(pageURL);
+
         WebElement logoLoop = driver.findElement(By.xpath("//img[@src='./img/logo.svg']"));
         String imagePathLoopActual = logoLoop.getAttribute("src");;
-        Assert.assertEquals(imagePathLoopActual, IMAGE_URL_LOGO_LOOP, ":oop image link" + _$_VercelTestBase.MESSAGE_MATCH);
+        Assert.assertEquals(imagePathLoopActual, IMAGE_URL_LOGO_LOOP, ":oop image link" + VercelTestBase.MESSAGE_MATCH);
     }
 
     @Test
     public void testHeaderImageAcademy(){
+        driver.get(pageURL);
+
         WebElement logoAcademy= driver.findElement(By.xpath("//img[@src='./img/logo-text.svg']"));
         String imagePathAcademyActual = logoAcademy.getAttribute("src");
-        Assert.assertEquals(imagePathAcademyActual, IMAGE_URL_LOGO_ACADEMY, "Academy image link" + _$_VercelTestBase.MESSAGE_MATCH);
+        Assert.assertEquals(imagePathAcademyActual, IMAGE_URL_LOGO_ACADEMY, "Academy image link" + VercelTestBase.MESSAGE_MATCH);
     }
 
     @Test
     public void testHeaderAutomationPractice(){
+        driver.get(pageURL);
+
         WebElement testAutomationPractice = driver.findElement(By.cssSelector("span[class='h1y']"));
-        Assert.assertEquals(testAutomationPractice.getText(), HEADER_TEST_AUTOMATION_PRACTICE, "Test automation practice header text" + _$_VercelTestBase.MESSAGE_MATCH);
+        Assert.assertEquals(testAutomationPractice.getText(), HEADER_TEST_AUTOMATION_PRACTICE, "Test automation practice header text" + VercelTestBase.MESSAGE_MATCH);
     }
 
     @Test
     public void testHeaderAvailableExamples(){
+        driver.get(pageURL);
+
         WebElement availableExamples = driver.findElement(By.cssSelector("span[class='h2 mb-4']"));
-        Assert.assertEquals(availableExamples.getText(), HEADER_AVAILABLE_EXAMPLES,  "Available practice header text" + _$_VercelTestBase.MESSAGE_MATCH);
+        Assert.assertEquals(availableExamples.getText(), HEADER_AVAILABLE_EXAMPLES,  "Available practice header text" + VercelTestBase.MESSAGE_MATCH);
     }
 
     @Test
     public void testBodyContent(){
+        driver.get(pageURL);
+
         WebElement unorderedList = driver.findElement(By.cssSelector("ul[class='list-group list-group-flush']"));
-        Assert.assertEquals(unorderedList.getText(), PAGE_CONTENT, "Text of home page content" + _$_VercelTestBase.MESSAGE_MATCH);
+        Assert.assertEquals(unorderedList.getText(), PAGE_CONTENT, "Text of home page content" + VercelTestBase.MESSAGE_MATCH);
     }
 
     @Test
     public void testLinks() {
+        driver.get(pageURL);
+
         List<WebElement> listItems = driver.findElements(By.className("list-group-item"));
         List<WebElement> itemLinks = driver.findElements(By.cssSelector("li[class='list-group-item']>a"));
         String actual = "";
         for (int i = 0; i < listItems.size(); i++) {
             actual += "\n\t" + listItems.get(i).getText() + " has link of " + itemLinks.get(i).getAttribute("href");
         }
-            Assert.assertEquals(actual, HOME_LINKS, "Links for practice items" + _$_VercelTestBase.MESSAGE_MATCH);
+            Assert.assertEquals(actual, HOME_LINKS, "Links for practice items" + VercelTestBase.MESSAGE_MATCH);
 
             Random random = new Random();
             int number = random.nextInt(50);
@@ -175,28 +184,9 @@ public class _0_Home extends _$_VercelTestBase {
 
     @Test
     public void testFooterImageText () {
-        WebElement poweredByLoopcamp = driver.findElement(By.cssSelector("div[style='text-align: center;margin-bottom: 40px']"));
-        Assert.assertEquals(poweredByLoopcamp.getText(), MAIN_FOOTER_POWERED_BY_LOOPCAMP, "Powered by loopcamp footer text" + _$_VercelTestBase.MESSAGE_MATCH);
-    }
-
-    @BeforeClass
-    public void setUp(){
-
-    }
-
-    @BeforeMethod
-    public void setUpMethod(){
-        driver = WebDriverFactory.getDriver(BROWSER);
-        driver.manage().window().maximize();
         driver.get(pageURL);
-    }
 
-    @AfterMethod
-    public void tearDownMethod(){
-        driver.quit();
-    }
-
-    @AfterClass
-    public void tearDown(){
+        WebElement poweredByLoopcamp = driver.findElement(By.cssSelector("div[style='text-align: center;margin-bottom: 40px']"));
+        Assert.assertEquals(poweredByLoopcamp.getText(), MAIN_FOOTER_POWERED_BY_LOOPCAMP, "Powered by loopcamp footer text" + VercelTestBase.MESSAGE_MATCH);
     }
 }

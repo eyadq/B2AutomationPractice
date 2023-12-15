@@ -8,22 +8,20 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
-import java.lang.annotation.Inherited;
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-public class _11_DragAndDropCircles extends _$_VercelTestBase {
+public class DragAndDropCircles extends VercelTestBase {
 
-    WebDriver driver;
-    public String pageURL = "https://loopcamp.vercel.app/drag-and-drop-circles.html";
-    public static final String BEFORE_ACTION = "Drag the small circle here.";
-    public static final String DURING_ACTION_OFF_TARGET = "Drop here.";
-    public static final String DURING_ACTION_ON_TARGET = "Now drop...";
-    public static final String AFTER_ACTION = "You did great!";
-    public static final String WRONG_ACTION = "Try again!";
-
+    private static final String pageURL = "https://loopcamp.vercel.app/drag-and-drop-circles.html";
+    private static final String BEFORE_ACTION = "Drag the small circle here.";
+    private static final String DURING_ACTION_OFF_TARGET = "Drop here.";
+    private static final String DURING_ACTION_ON_TARGET = "Now drop...";
+    private static final String AFTER_ACTION = "You did great!";
+    private static final String WRONG_ACTION = "Try again!";
     @Test
     public void test(){
+        driver.get(pageURL);
+
         WebElement target = driver.findElement(By.id("droptarget"));
         WebElement draggable = driver.findElement(By.id("draggable"));
         Assert.assertEquals(target.getText(), BEFORE_ACTION, "Target text before action" + MESSAGE_MATCH);
@@ -46,17 +44,5 @@ public class _11_DragAndDropCircles extends _$_VercelTestBase {
         actions.dragAndDrop(draggable, target).perform();
         Assert.assertEquals(target.getText(), AFTER_ACTION, "Target text after action" + MESSAGE_MATCH);
         Assert.assertEquals(target.getAttribute("class"), "k-header painted", "Class name of target when blue" + MESSAGE_MATCH);
-    }
-
-    @BeforeMethod
-    public void setUpMethod() {
-        driver = WebDriverFactory.getDriver("chrome");
-        driver.manage().window().maximize();
-        driver.get(pageURL);
-    }
-
-    @AfterMethod
-    public void tearDownMethod() {
-        //driver.quit();
     }
 }
