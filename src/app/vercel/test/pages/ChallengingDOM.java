@@ -1,7 +1,5 @@
-package com.loop.test.vercel;
+package app.vercel.test.pages;
 
-import com.loop.test.utilities.WebDriverFactory;
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
 
 public class ChallengingDOM extends VercelTestBase {

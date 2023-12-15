@@ -1,6 +1,6 @@
-package com.loop.test.vercel;
+package app.vercel.test.pages;
 
-import com.loop.test.utilities.FileUtil;
+import app.vercel.test.utilities.FileUtil;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -8,8 +8,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class SimpleSwing {
 

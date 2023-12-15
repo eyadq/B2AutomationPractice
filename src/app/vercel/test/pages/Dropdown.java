@@ -1,10 +1,8 @@
-package com.loop.test.vercel;
+package app.vercel.test.pages;
 
-import com.loop.test.utilities.DateUtil;
-import com.loop.test.utilities.WebDriverFactory;
-import com.loop.test.utilities.enums.States;
+import app.vercel.test.utilities.DateUtil;
+import app.vercel.test.utilities.enums.States;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
