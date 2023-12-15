@@ -1,15 +1,12 @@
-package com.loop.test.vercel;
+package app.vercel.test.pages;
 
-import com.loop.test.utilities.FileUtil;
-import com.loop.test.utilities.LogUtil;
-import com.loop.test.utilities.WebDriverFactory;
+import app.vercel.test.utilities.FileUtil;
+import app.vercel.test.utilities.LogUtil;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
-import java.io.File;
 import java.util.List;
 
 import static org.testng.internal.Utils.log;

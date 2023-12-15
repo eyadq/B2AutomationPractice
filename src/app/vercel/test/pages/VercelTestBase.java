@@ -1,6 +1,6 @@
-package com.loop.test.vercel;
+package app.vercel.test.pages;
 
-import com.loop.test.utilities.WebDriverFactory;
+import app.vercel.test.utilities.DriverUtils;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
 
@@ -30,7 +30,7 @@ public class VercelTestBase {
 
     @BeforeMethod
     public void setUpMethod(){
-        driver = WebDriverFactory.getDriver(BROWSER);
+        driver = DriverUtils.getDriver(BROWSER);
         driver.manage().window().maximize();
     }
 

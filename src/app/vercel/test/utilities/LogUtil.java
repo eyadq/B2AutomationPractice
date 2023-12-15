@@ -1,4 +1,4 @@
-package com.loop.test.utilities;
+package app.vercel.test.utilities;
 
 import java.util.Arrays;
 

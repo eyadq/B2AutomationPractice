@@ -1,4 +1,4 @@
-package com.loop.test.utilities.enums;
+package app.vercel.test.utilities.enums;
 
 public enum DaysOfWeek {
 

@@ -1,6 +1,6 @@
-package com.loop.test.utilities;
+package app.vercel.test.utilities;
 
-import com.loop.test.vercel.VercelTestBase;
+import app.vercel.test.pages.VercelTestBase;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

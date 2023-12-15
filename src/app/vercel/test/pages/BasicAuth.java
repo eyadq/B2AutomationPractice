@@ -1,6 +1,4 @@
-package com.loop.test.vercel;
-
-import org.openqa.selenium.WebDriver;
+package app.vercel.test.pages;
 
 public class BasicAuth extends VercelTestBase {
 

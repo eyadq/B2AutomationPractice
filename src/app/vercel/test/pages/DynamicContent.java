@@ -1,4 +1,4 @@
-package com.loop.test.vercel;
+package app.vercel.test.pages;
 
 import org.testng.annotations.Test;
 
