@@ -1,5 +1,6 @@
 package app.vercel.practice.pages;
 
+import app.vercel.practice.base.VercelTestBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;

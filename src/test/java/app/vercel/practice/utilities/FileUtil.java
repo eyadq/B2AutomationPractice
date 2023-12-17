@@ -1,6 +1,6 @@
 package app.vercel.practice.utilities;
 
-import app.vercel.practice.pages.VercelTestBase;
+import app.vercel.practice.base.VercelTestBase;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

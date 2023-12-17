@@ -1,5 +1,6 @@
 package app.vercel.practice.pages;
 
+import app.vercel.practice.base.VercelTestBase;
 import app.vercel.practice.utilities.DateUtil;
 import app.vercel.practice.enums.States;
 import org.openqa.selenium.By;

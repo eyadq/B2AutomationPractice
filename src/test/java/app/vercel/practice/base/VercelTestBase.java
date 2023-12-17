@@ -1,4 +1,4 @@
-package app.vercel.practice.pages;
+package app.vercel.practice.base;
 
 import app.vercel.practice.utilities.DriverUtil;
 import org.openqa.selenium.WebDriver;
