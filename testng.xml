@@ -4,21 +4,21 @@
 <suite name= "All">
     <test name= "Vercel">
         <classes>
-            <class name="app.vercel.test.pages.Home" />
-            <class name="app.vercel.test.pages.NoABTest" />
-            <class name="app.vercel.test.pages.AddRemoveElements" />
-            <class name="app.vercel.test.pages.Autocomplete" />
-            <class name="app.vercel.test.pages.BasicAuth" />
-            <class name="app.vercel.test.pages.BrokenImages" />
-            <class name="app.vercel.test.pages.ChallengingDOM" />
-            <class name="app.vercel.test.pages.Checkboxes" />
-            <class name="app.vercel.test.pages.ContextMenu" />
-            <class name="app.vercel.test.pages.DisappearingElements" />
-            <class name="app.vercel.test.pages.DragAndDrop" />
-            <class name="app.vercel.test.pages.DragAndDropCircles" />
-            <class name="app.vercel.test.pages.Dropdown" />
-            <class name="app.vercel.test.pages.DynamicContent" />
-            <class name="app.vercel.test.pages.ForgotPassword" />
+            <class name="app.vercel.practice.pages.Home" />
+            <class name="app.vercel.practice.pages.NoABTest" />
+            <class name="app.vercel.practice.pages.AddRemoveElements" />
+            <class name="app.vercel.practice.pages.Autocomplete" />
+            <class name="app.vercel.practice.pages.BasicAuth" />
+            <class name="app.vercel.practice.pages.BrokenImages" />
+            <class name="app.vercel.practice.pages.ChallengingDOM" />
+            <class name="app.vercel.practice.pages.Checkboxes" />
+            <class name="app.vercel.practice.pages.ContextMenu" />
+            <class name="app.vercel.practice.pages.DisappearingElements" />
+            <class name="app.vercel.practice.pages.DragAndDrop" />
+            <class name="app.vercel.practice.pages.DragAndDropCircles" />
+            <class name="app.vercel.practice.pages.Dropdown" />
+            <class name="app.vercel.practice.pages.DynamicContent" />
+            <class name="app.vercel.practice.pages.ForgotPassword" />
         </classes>
 
     </test>
