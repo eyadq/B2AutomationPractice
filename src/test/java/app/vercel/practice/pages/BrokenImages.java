@@ -1,5 +1,6 @@
 package app.vercel.practice.pages;
 
+import app.vercel.practice.base.VercelTestBase;
 import app.vercel.practice.utilities.FileUtil;
 import app.vercel.practice.utilities.LogUtil;
 import app.vercel.practice.utilities.SwingUtil;

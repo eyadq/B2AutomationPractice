@@ -1,5 +1,6 @@
 package app.vercel.practice.pages;
 
+import app.vercel.practice.base.VercelTestBase;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
