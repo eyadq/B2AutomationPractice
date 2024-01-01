@@ -1,6 +1,7 @@
 package app.vercel.practice.pages;
 
 import app.vercel.practice.base.VercelTestBase;
+import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
@@ -19,13 +20,13 @@ public class ContextMenu extends VercelTestBase {
             };
     @Test
     public void testText(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
         ////div[@class='example']//following-sibling::p
-        WebElement header = driver.findElement(By.tagName("h3"));
+        WebElement header = Driver.getDriver().findElement(By.tagName("h3"));
         Assert.assertEquals(header.getText(), CONTEXT_MENU_HEADER, "Contextmenu paragraph text " + MESSAGE_MATCH);
 
-        List<WebElement> paragraphs = driver.findElements(By.xpath("//div[@class='example']//following-sibling::p"));
+        List<WebElement> paragraphs = Driver.getDriver().findElements(By.xpath("//div[@class='example']//following-sibling::p"));
 
         for (int i = 0; i < paragraphs.size(); i++) {
             WebElement sentence = paragraphs.get(i);
@@ -35,13 +36,13 @@ public class ContextMenu extends VercelTestBase {
 
     @Test
     public void testContextMenu() throws InterruptedException {
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement theBoxThing = driver.findElement(By.cssSelector("div[id='hot-spot']"));
-        Actions action = new Actions(driver);
+        WebElement theBoxThing = Driver.getDriver().findElement(By.cssSelector("div[id='hot-spot']"));
+        Actions action = new Actions(Driver.getDriver());
         action.contextClick(theBoxThing).perform();
 
-        Alert alert = driver.switchTo().alert();
+        Alert alert = Driver.getDriver().switchTo().alert();
         alert.accept();
 
 

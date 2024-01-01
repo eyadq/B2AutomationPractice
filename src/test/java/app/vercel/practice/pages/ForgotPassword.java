@@ -1,6 +1,7 @@
 package app.vercel.practice.pages;
 
 import app.vercel.practice.base.VercelTestBase;
+import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
@@ -19,33 +20,33 @@ public class ForgotPassword extends VercelTestBase {
 
     @Test
     public void testHeader(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement forgotPasswordHeader = driver.findElement(By.tagName("h2"));
+        WebElement forgotPasswordHeader = Driver.getDriver().findElement(By.tagName("h2"));
         Assert.assertEquals(forgotPasswordHeader.getText(), HEADER_TEXT, "Forgot password header text" + MESSAGE_MATCH);
     }
 
     @Test
     public void testParagraph(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement emailLabel = driver.findElement(By.cssSelector("label[for='email']"));
+        WebElement emailLabel = Driver.getDriver().findElement(By.cssSelector("label[for='email']"));
         Assert.assertEquals(emailLabel.getText(), EMAIL_TEXT, "Email label text" + MESSAGE_MATCH);
     }
     @Test
     public void testFieldAndButton(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement emailInput = driver.findElement(By.cssSelector("input[name='email']"));
+        WebElement emailInput = Driver.getDriver().findElement(By.cssSelector("input[name='email']"));
         Assert.assertEquals(emailInput.getAttribute("id"), EMAIL_INPUT_ID, "Email input attribute" + MESSAGE_MATCH);
 
-        WebElement button = driver.findElement(By.cssSelector("button[type='submit']"));
+        WebElement button = Driver.getDriver().findElement(By.cssSelector("button[type='submit']"));
         Assert.assertEquals(button.getText(), RETRIEVE_PASSWORD_BUTTON_TEXT, "Text of retrieve password button" + MESSAGE_MATCH);
 
         emailInput.sendKeys(EMAIL_INVALID);
         button.click();
 
-        WebElement badEmailAlert = driver.findElement(By.cssSelector("div[class='alert alert-danger'"));
+        WebElement badEmailAlert = Driver.getDriver().findElement(By.cssSelector("div[class='alert alert-danger'"));
         Assert.assertEquals(badEmailAlert.getText(), ERROR_MESSAGE, "Invalid email error message text" + MESSAGE_MATCH);
 
         emailInput.sendKeys(EMAIL_VALID);

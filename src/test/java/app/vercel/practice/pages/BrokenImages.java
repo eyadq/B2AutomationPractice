@@ -1,6 +1,7 @@
 package app.vercel.practice.pages;
 
 import app.vercel.practice.base.VercelTestBase;
+import app.vercel.practice.utilities.Driver;
 import app.vercel.practice.utilities.FileUtil;
 import app.vercel.practice.utilities.LogUtil;
 import app.vercel.practice.utilities.SwingUtil;
@@ -20,8 +21,8 @@ public class BrokenImages extends VercelTestBase {
 
     @Test
     public void testImages() {
-        driver.get(pageURL);
-        WebElement imageContainer = driver.findElement(By.xpath("//div[@class='example']"));
+        Driver.getDriver().get(pageURL);
+        WebElement imageContainer = Driver.getDriver().findElement(By.xpath("//div[@class='example']"));
         List<WebElement> images = imageContainer.findElements(By.tagName("img"));
 
         int count = 0;

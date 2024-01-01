@@ -1,9 +1,9 @@
 package app.vercel.practice.pages;
 
 import app.vercel.practice.base.VercelTestBase;
+import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
@@ -23,29 +23,30 @@ public class Autocomplete extends VercelTestBase {
 
     @Test
     public void testHeader(){
-        driver.get(pageURL);
-        WebElement header = driver.findElement(By.tagName("h3"));
+        Driver.getDriver().get(pageURL);
+        WebElement header = Driver.getDriver().findElement(By.tagName("h3"));
         Assert.assertEquals(header.getText(), HEADER_TEXT, "Autocomplete header text");
     }
 
     @Test
     public void testParagraph (){
-        driver.get(pageURL);
-        WebElement paragraph = driver.findElement(By.xpath("//p[text()='Start typing:']"));
+        Driver.getDriver().get(pageURL);
+        WebElement paragraph = Driver.getDriver().findElement(By.xpath("//p[text()='Start typing:']"));
         Assert.assertEquals(paragraph.getText(), PARAGRAPH_TEXT, "Autocomplete parapgraph text");
     }
+
     @Test
     public void testAutocomplete(){
-        driver.get(pageURL);
-        WebElement input = driver.findElement(By.id("myCountry"));
+        Driver.getDriver().get(pageURL);
+        WebElement input = Driver.getDriver().findElement(By.id("myCountry"));
         Assert.assertEquals(input.getAttribute("placeholder"), PLACEHOLDER_TEXT, "placeholder text for input");
 
         WebElement autocompleteList;
-        autocompleteList = refreshAutoCompleteList(driver);
+        autocompleteList = refreshAutoCompleteList();
 
         List<WebElement> listItems;
 
-        listItems = sendText("Palest", input, driver);
+        listItems = sendText("Palest", input);
         String[] actualOutputFromAutoComplete = new String[listItems.size()];
         for (int i = 0; i < actualOutputFromAutoComplete.length; i++) {
             actualOutputFromAutoComplete[i] = listItems.get(i).getText();
@@ -55,41 +56,42 @@ public class Autocomplete extends VercelTestBase {
         //Test to click on search result
         input.sendKeys(Keys.ARROW_DOWN);
         input.sendKeys(Keys.ENTER);
-        WebElement submitButton = driver.findElement(By.cssSelector("input[type='button']"));
+        WebElement submitButton = Driver.getDriver().findElement(By.cssSelector("input[type='button']"));
         submitButton.click();
 
-        WebElement result = driver.findElement(By.cssSelector("p[id='result']"));
+        WebElement result = Driver.getDriver().findElement(By.cssSelector("p[id='result']"));
 
         Assert.assertEquals(result.getText(), LOGGED_RESULT, "Log after clicking submit");
 
 
-        listItems = sendText("united", input, driver);
+        listItems = sendText("united", input);
         String[] actualItems = new String[listItems.size()];
         for (int i = 0; i < listItems.size(); i++) {
             actualItems[i] = listItems.get(i).getText();
         }
          Assert.assertEquals(actualItems, AUTOCOMPLETE_OPTIONS_MULTIPLE, "Autocomplete options");
 
-        driver.quit();
-
     }
 
-    public WebElement refreshAutoCompleteList(WebDriver driver){
+
+
+
+    public WebElement refreshAutoCompleteList(){
         WebElement autocompleteList = null;
         try{
-            autocompleteList = driver.findElement(By.id("myCountryautocomplete-list"));
+            autocompleteList = Driver.getDriver().findElement(By.id("myCountryautocomplete-list"));
         } catch (Exception e){
             Assert.assertEquals(false, false, "Test if autocomplete exists by default");
         }
         return autocompleteList;
     }
 
-    public List<WebElement> sendText(String str, WebElement inputField, WebDriver driver) {
+    public List<WebElement> sendText(String str, WebElement inputField) {
         inputField.clear();
         inputField.sendKeys(str);
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        Driver.getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        WebElement autocompleteList = refreshAutoCompleteList(driver);
+        WebElement autocompleteList = refreshAutoCompleteList();
         return autocompleteList.findElements(By.tagName("div"));
     }
 

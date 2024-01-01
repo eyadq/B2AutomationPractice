@@ -1,6 +1,7 @@
 package app.vercel.practice.pages;
 
 import app.vercel.practice.base.VercelTestBase;
+import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -118,52 +119,52 @@ public class Home extends VercelTestBase {
                     "\tWeb Tables has link of https://loopcamp.vercel.app/web-tables.html";
     @Test
     public void testHeaderImageLoop(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement logoLoop = driver.findElement(By.xpath("//img[@src='./img/logo.svg']"));
+        WebElement logoLoop = Driver.getDriver().findElement(By.xpath("//img[@src='./img/logo.svg']"));
         String imagePathLoopActual = logoLoop.getAttribute("src");;
         Assert.assertEquals(imagePathLoopActual, IMAGE_URL_LOGO_LOOP, ":oop image link" + MESSAGE_MATCH);
     }
 
     @Test
     public void testHeaderImageAcademy(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement logoAcademy= driver.findElement(By.xpath("//img[@src='./img/logo-text.svg']"));
+        WebElement logoAcademy= Driver.getDriver().findElement(By.xpath("//img[@src='./img/logo-text.svg']"));
         String imagePathAcademyActual = logoAcademy.getAttribute("src");
         Assert.assertEquals(imagePathAcademyActual, IMAGE_URL_LOGO_ACADEMY, "Academy image link" + MESSAGE_MATCH);
     }
 
     @Test
     public void testHeaderAutomationPractice(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement testAutomationPractice = driver.findElement(By.cssSelector("span[class='h1y']"));
+        WebElement testAutomationPractice = Driver.getDriver().findElement(By.cssSelector("span[class='h1y']"));
         Assert.assertEquals(testAutomationPractice.getText(), HEADER_TEST_AUTOMATION_PRACTICE, "Test automation practice header text" + MESSAGE_MATCH);
     }
 
     @Test
     public void testHeaderAvailableExamples(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement availableExamples = driver.findElement(By.cssSelector("span[class='h2 mb-4']"));
+        WebElement availableExamples = Driver.getDriver().findElement(By.cssSelector("span[class='h2 mb-4']"));
         Assert.assertEquals(availableExamples.getText(), HEADER_AVAILABLE_EXAMPLES,  "Available practice header text" + MESSAGE_MATCH);
     }
 
     @Test
     public void testBodyContent(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement unorderedList = driver.findElement(By.cssSelector("ul[class='list-group list-group-flush']"));
+        WebElement unorderedList = Driver.getDriver().findElement(By.cssSelector("ul[class='list-group list-group-flush']"));
         Assert.assertEquals(unorderedList.getText(), PAGE_CONTENT, "Text of home page content" + MESSAGE_MATCH);
     }
 
     @Test
     public void testLinks() {
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        List<WebElement> listItems = driver.findElements(By.className("list-group-item"));
-        List<WebElement> itemLinks = driver.findElements(By.cssSelector("li[class='list-group-item']>a"));
+        List<WebElement> listItems = Driver.getDriver().findElements(By.className("list-group-item"));
+        List<WebElement> itemLinks = Driver.getDriver().findElements(By.cssSelector("li[class='list-group-item']>a"));
         String actual = "";
         for (int i = 0; i < listItems.size(); i++) {
             actual += "\n\t" + listItems.get(i).getText() + " has link of " + itemLinks.get(i).getAttribute("href");
@@ -175,7 +176,7 @@ public class Home extends VercelTestBase {
             String expectedURL = itemLinks.get(number).getAttribute("href");
             itemLinks.get(number).click();
 
-            String actualURL = driver.getCurrentUrl();
+            String actualURL = Driver.getDriver().getCurrentUrl();
             Assert.assertEquals(actualURL, expectedURL);
 
 
@@ -183,9 +184,9 @@ public class Home extends VercelTestBase {
 
     @Test
     public void testFooterImageText () {
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement poweredByLoopcamp = driver.findElement(By.cssSelector("div[style='text-align: center;margin-bottom: 40px']"));
+        WebElement poweredByLoopcamp = Driver.getDriver().findElement(By.cssSelector("div[style='text-align: center;margin-bottom: 40px']"));
         Assert.assertEquals(poweredByLoopcamp.getText(), MAIN_FOOTER_POWERED_BY_LOOPCAMP, "Powered by loopcamp footer text" + MESSAGE_MATCH);
     }
 }

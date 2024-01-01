@@ -1,6 +1,7 @@
 package app.vercel.practice.pages;
 
 import app.vercel.practice.base.VercelTestBase;
+import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -21,24 +22,24 @@ public class DynamicContent extends VercelTestBase {
 
     @Test
     public void testText(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement header = driver.findElement(By.tagName("h3"));
+        WebElement header = Driver.getDriver().findElement(By.tagName("h3"));
         Assert.assertEquals(header.getText(), HEADER_TEXT, "Text of header" + MESSAGE_MATCH);
-        WebElement aboveParagraph = driver.findElement(By.xpath("//p[contains(text(), 'This example')]"));
+        WebElement aboveParagraph = Driver.getDriver().findElement(By.xpath("//p[contains(text(), 'This example')]"));
         Assert.assertEquals(aboveParagraph.getText(), PARAGRAPH_ABOVE_TEXT, "Text of above paragraph" + MESSAGE_MATCH);
-        WebElement belowParagraph = driver.findElement(By.xpath("//p[contains(text(), 'To make')]"));
+        WebElement belowParagraph = Driver.getDriver().findElement(By.xpath("//p[contains(text(), 'To make')]"));
         Assert.assertEquals(belowParagraph.getText(), PARAGRAPH_BELOW_TEXT, "Text of below paragraph" + MESSAGE_MATCH);
     }
 
     @Test
     public void testContent(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        List<WebElement> rowsOfContent = driver.findElements(By.xpath("//div[@class='example']//child::div[@id='content']//child::div[@class='row']"));
+        List<WebElement> rowsOfContent = Driver.getDriver().findElements(By.xpath("//div[@class='example']//child::div[@id='content']//child::div[@class='row']"));
 
         List<WebElement> images = new ArrayList<>();
-        List<WebElement> paragraphs = driver.findElements(By.xpath("//img[@src]//parent::div//following-sibling::div"));
+        List<WebElement> paragraphs = Driver.getDriver().findElements(By.xpath("//img[@src]//parent::div//following-sibling::div"));
         for (int i = 0; i < rowsOfContent.size(); i++) {
 
             images.add(rowsOfContent.get(i).findElement(By.tagName("img")));

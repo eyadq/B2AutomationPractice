@@ -1,6 +1,7 @@
 package app.vercel.practice.pages;
 
 import app.vercel.practice.base.VercelTestBase;
+import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -14,18 +15,18 @@ public class NoABTest extends VercelTestBase {
 
     @Test
     public void testHeader(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement noABHeader = driver.findElement(By.tagName("h3"));
+        WebElement noABHeader = Driver.getDriver().findElement(By.tagName("h3"));
         //HelperMethods.logPrintMatch(noABHeader.getText(), VercelConstants.NoAB_HEADER, "NO A/B Test header text");
         Assert.assertEquals(noABHeader.getText(), HEADER_TEXT, "NO A/B Test header text" + MESSAGE_MATCH);
     }
 
     @Test
     public void testBody (){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement noABBody = driver.findElement(By.cssSelector("div[class='example']>p"));
+        WebElement noABBody = Driver.getDriver().findElement(By.cssSelector("div[class='example']>p"));
         //HelperMethods.logPrintMatch(noABBody.getText(), VercelConstants.NoAB_BODY, "No AB Test body text");
         Assert.assertEquals(noABBody.getText(), PARAGRAPH_TEXT, "NO A/B Test body text" + MESSAGE_MATCH);
 

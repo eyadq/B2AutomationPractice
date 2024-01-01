@@ -1,6 +1,7 @@
 package app.vercel.practice.pages;
 
 import app.vercel.practice.base.VercelTestBase;
+import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -16,22 +17,22 @@ public class DragAndDrop extends VercelTestBase {
 
     @Test
     public void testHeader(){
-        driver.get(pageURL);
-        WebElement header = driver.findElement(By.tagName("h3"));
+        Driver.getDriver().get(pageURL);
+        WebElement header = Driver.getDriver().findElement(By.tagName("h3"));
         Assert.assertEquals(header.getText(), HEADER_TEXT, "Drag and drop header text" + MESSAGE_MATCH);
     }
 
     @Test
     public void testDraggableBoxes() {
-        driver.get(pageURL);
-        List<WebElement> boxes = driver.findElements(By.cssSelector("div[class='column']"));
+        Driver.getDriver().get(pageURL);
+        List<WebElement> boxes = Driver.getDriver().findElements(By.cssSelector("div[class='column']"));
         Assert.assertEquals(boxes.get(0).getText(), "A", "Placement of A box after drag and drop" + MESSAGE_MATCH);
         Assert.assertEquals(boxes.get(1).getText(), "B", "Placement of B box after drag and drop" + MESSAGE_MATCH);
 
-        Actions actions = new Actions(driver);
+        Actions actions = new Actions(Driver.getDriver());
         actions.dragAndDrop(boxes.get(0), boxes.get(1)).perform();
 
-        boxes = driver.findElements(By.cssSelector("div[class='column']"));
+        boxes = Driver.getDriver().findElements(By.cssSelector("div[class='column']"));
         Assert.assertEquals(boxes.get(0).getText(), "B", "Placement of B box after drag and drop" + MESSAGE_MATCH);
         Assert.assertEquals(boxes.get(1).getText(), "A", "Placement of A box after drag and drop" + MESSAGE_MATCH);
     }

@@ -1,8 +1,8 @@
 package app.vercel.practice.pages;
 
 import app.vercel.practice.base.VercelTestBase;
+import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
@@ -18,19 +18,19 @@ public class AddRemoveElements extends VercelTestBase {
 
     @Test
     public void testHeader(){
-        driver.get(pageURL);
-        WebElement addRemoveHeader = driver.findElement(By.tagName("h3"));
+        Driver.getDriver().get(pageURL);
+        WebElement addRemoveHeader = Driver.getDriver().findElement(By.tagName("h3"));
         Assert.assertEquals(addRemoveHeader.getText(), HEADER_TEXT, "Add Remove Header text");
     }
 
     @Test
     public void testAddRemove(){
-        driver.get(pageURL);
-        WebElement addButton = driver.findElement(By.cssSelector("button[class='btn btn-primary'"));
+        Driver.getDriver().get(pageURL);
+        WebElement addButton = Driver.getDriver().findElement(By.cssSelector("button[class='btn btn-primary'"));
         //HelperMethods.logPrintMatch(addButton.getText(), VercelConstants.ADD_REMOVE_ADD_BUTTON_TEXT, "Add button text");
         Assert.assertEquals(addButton.getText(), BUTTON_TEXT, "Add button text" + MESSAGE_MATCH);
 
-        List<WebElement> deleteButtons = driver.findElements(By.cssSelector("button[class='added-manually btn btn-secondary']"));
+        List<WebElement> deleteButtons = Driver.getDriver().findElements(By.cssSelector("button[class='added-manually btn btn-secondary']"));
         //HelperMethods.logPrintMatch(deleteButtons.size(), 0, "Number of delete buttons by default");
         Assert.assertEquals(deleteButtons.size(), 0, "Number of delete buttons by default" + MESSAGE_MATCH);
 
@@ -41,14 +41,14 @@ public class AddRemoveElements extends VercelTestBase {
             numberOfTimesToClickAdd = random.nextInt(10);
         }
         for (int i = 0; i < numberOfTimesToClickAdd; i++) {
-            deleteButtons = clickAddButton(addButton, deleteButtons, driver);
+            deleteButtons = clickAddButton(addButton, deleteButtons);
         }
 
         //HelperMethods.logPrintMatch(deleteButtons.size(), numberOfTimesToClickAdd, "Number of delete buttons after clicking add " + numberOfTimesToClickAdd + " time(s)");
         Assert.assertEquals(deleteButtons.size(), numberOfTimesToClickAdd, "Number of delete buttons after clicking add " + numberOfTimesToClickAdd + " time(s)" + MESSAGE_MATCH);
 
         deleteButtons.get(random.nextInt(numberOfTimesToClickAdd)).click();
-        deleteButtons = refreshDeleteButtons(driver);
+        deleteButtons = refreshDeleteButtons();
 
         int numberOfDeleteButtonsLeft = 0;
         for (int i = 0; i < deleteButtons.size(); i++) {
@@ -62,12 +62,12 @@ public class AddRemoveElements extends VercelTestBase {
     }
 
 
-    public static List<WebElement> clickAddButton(WebElement addButton, List<WebElement> deleteButtons, WebDriver driver){
+    public static List<WebElement> clickAddButton(WebElement addButton, List<WebElement> deleteButtons){
         addButton.click();
-        return deleteButtons  = driver.findElements(By.cssSelector("button[class='added-manually btn btn-secondary']"));
+        return deleteButtons  = Driver.getDriver().findElements(By.cssSelector("button[class='added-manually btn btn-secondary']"));
     }
 
-    public static List<WebElement> refreshDeleteButtons(WebDriver driver){
-        return driver.findElements(By.cssSelector("button[class='added-manually btn btn-secondary']"));
+    public static List<WebElement> refreshDeleteButtons(){
+        return Driver.getDriver().findElements(By.cssSelector("button[class='added-manually btn btn-secondary']"));
     }
 }
