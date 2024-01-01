@@ -1,4 +1,4 @@
-package app.vercel.practice.pages;
+package com.loop.test.day10_tasks;
 
 import app.vercel.practice.base.VercelTestBase;
 import app.vercel.practice.utilities.Driver;
@@ -6,7 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.Test;
 
 import java.util.concurrent.TimeUnit;
 

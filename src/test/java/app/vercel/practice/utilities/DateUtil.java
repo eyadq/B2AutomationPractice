@@ -73,7 +73,7 @@ public class DateUtil {
             default:
                 days = 31;
         }
-        if(isLeap()){
+        if(isLeap() && month.equals("February")){
             return days++;
         }
         return days;

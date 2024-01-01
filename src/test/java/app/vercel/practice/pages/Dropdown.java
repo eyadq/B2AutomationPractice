@@ -3,6 +3,7 @@ package app.vercel.practice.pages;
 import app.vercel.practice.base.VercelTestBase;
 import app.vercel.practice.utilities.DateUtil;
 import app.vercel.practice.enums.States;
+import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -56,11 +57,11 @@ public class Dropdown extends VercelTestBase {
 
     @Test
     public void testHeaders(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement headerMain = driver.findElement(By.tagName("h3"));
+        WebElement headerMain = Driver.getDriver().findElement(By.tagName("h3"));
         Assert.assertEquals(headerMain.getText(), MAIN_HEADER_TEXT, "Text of main header" + MESSAGE_MATCH);
-        List<WebElement> headerSize6 = driver.findElements(By.tagName("h6"));
+        List<WebElement> headerSize6 = Driver.getDriver().findElements(By.tagName("h6"));
         for (int i = 0; i < headerSize6.size(); i++) {
             Assert.assertEquals(headerSize6.get(i).getText(), SMALLER_HEADER_TEXTS[i], "Smaller header " + i + " text" + MESSAGE_MATCH);
         }
@@ -68,9 +69,9 @@ public class Dropdown extends VercelTestBase {
 
     @Test
     public void testDropdownSimple(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        Select simple = new Select(driver.findElement(By.id("dropdown")));
+        Select simple = new Select(Driver.getDriver().findElement(By.id("dropdown")));
         List<WebElement> simpleOptions = simple.getOptions();
         for (int i=0; i<simpleOptions.size(); i++){
             Assert.assertEquals(simpleOptions.get(i).getText(), SIMPLE_OPTIONS[i], "Text of option " + i + MESSAGE_MATCH );
@@ -79,18 +80,18 @@ public class Dropdown extends VercelTestBase {
 
     @Test
     public void testDropDownBirth(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
         String[] todaysDate = DateUtil.getTodaysDate();
 
-        Select dropdownYear = new Select(driver.findElement(By.id("year")));
+        Select dropdownYear = new Select(Driver.getDriver().findElement(By.id("year")));
         String[] yearOptions = new String[dropdownYear.getOptions().size()];
         for (int i=0; i<yearOptions.length; i++){
             yearOptions[i] = dropdownYear.getOptions().get(i).getText();
         }
         Assert.assertEquals(Arrays.toString(yearOptions), Arrays.toString(DateUtil.getIntArray(1924, 2023)), "Options in year dropdwon" + MESSAGE_MATCH);
 
-        Select dropdownMonth = new Select(driver.findElement(By.id("month")));
+        Select dropdownMonth = new Select(Driver.getDriver().findElement(By.id("month")));
         String[] monthOptions = new String[dropdownMonth.getOptions().size()];
         for (int i = 0; i < monthOptions.length; i++) {
             monthOptions[i] = dropdownMonth.getOptions().get(i).getText();
@@ -98,7 +99,7 @@ public class Dropdown extends VercelTestBase {
         Assert.assertEquals(Arrays.toString(monthOptions), Arrays.toString(DateUtil.getMonths()), "Options in month dropdown" + MESSAGE_MATCH);
 
 
-        Select dropdownDay = new Select(driver.findElement(By.id("day")));
+        Select dropdownDay = new Select(Driver.getDriver().findElement(By.id("day")));
         int numberOfDaysActual = dropdownDay.getOptions().size();
         int numberOfDaysExpected = DateUtil.getNumberDaysInMonth(todaysDate[1]);
         Assert.assertEquals(numberOfDaysActual, numberOfDaysExpected, "Options in days dropdown" + MESSAGE_MATCH);
@@ -124,9 +125,9 @@ public class Dropdown extends VercelTestBase {
 
     @Test
     public void testDropDownState(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        Select dropDownStates = new Select(driver.findElement(By.id("state")));
+        Select dropDownStates = new Select(Driver.getDriver().findElement(By.id("state")));
 
         Assert.assertEquals(dropDownStates.getFirstSelectedOption().getAttribute("value"), STATE_DEFAULT_VALUE, "Default option for state" + MESSAGE_MATCH);
         Assert.assertEquals(dropDownStates.getFirstSelectedOption().getText(), STATE_DEFAULT_TEXT, "Default text for state" + MESSAGE_MATCH);
@@ -144,9 +145,9 @@ public class Dropdown extends VercelTestBase {
 
     @Test
     public void testDropdownLanguages(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        Select languages = new Select(driver.findElement(By.name("Languages")));
+        Select languages = new Select(Driver.getDriver().findElement(By.name("Languages")));
         List<WebElement> options = languages.getOptions();
 
         options.forEach(each -> Assert.assertFalse(each.isSelected(), "Default state for languages option should be false") );
@@ -163,13 +164,13 @@ public class Dropdown extends VercelTestBase {
 
     @Test
     public void testDropdownLinks(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement dropdownLinks = driver.findElement(By.xpath("//a[@id='dropdownMenuLink']"));
+        WebElement dropdownLinks = Driver.getDriver().findElement(By.xpath("//a[@id='dropdownMenuLink']"));
         dropdownLinks.click();
 
-        WebElement linksMenu = driver.findElement(By.xpath("//div[@aria-labelledby='dropdownMenuLink']"));
-        List<WebElement> options = driver.findElements(By.xpath("//a[@class='dropdown-item']"));
+        WebElement linksMenu = Driver.getDriver().findElement(By.xpath("//div[@aria-labelledby='dropdownMenuLink']"));
+        List<WebElement> options = Driver.getDriver().findElements(By.xpath("//a[@class='dropdown-item']"));
 
         Random random = new Random();
         int randomNum = random.nextInt(5);
@@ -177,8 +178,8 @@ public class Dropdown extends VercelTestBase {
             randomNum = random.nextInt(5);
         }
         String text = options.get(randomNum).getText().toLowerCase();
-        driver.navigate().to(options.get(randomNum).getAttribute("href"));
-        String newTitle = driver.getTitle().toLowerCase();
+        Driver.getDriver().navigate().to(options.get(randomNum).getAttribute("href"));
+        String newTitle = Driver.getDriver().getTitle().toLowerCase();
         Assert.assertTrue(newTitle.contains(text), "Text in tags matches link" + MESSAGE_MATCH);
 
 

@@ -8,18 +8,18 @@
             <class name="app.vercel.practice.pages.NoABTest" />
             <class name="app.vercel.practice.pages.AddRemoveElements" />
             <class name="app.vercel.practice.pages.Autocomplete" />
-            <class name="app.vercel.practice.pages.BasicAuth" />
-            <class name="app.vercel.practice.pages.BrokenImages" />
-            <class name="app.vercel.practice.pages.ChallengingDOM" />
-            <class name="app.vercel.practice.pages.Checkboxes" />
-            <class name="app.vercel.practice.pages.ContextMenu" />
-            <class name="app.vercel.practice.pages.DisappearingElements" />
-            <class name="app.vercel.practice.pages.DragAndDrop" />
-            <class name="app.vercel.practice.pages.DragAndDropCircles" />
-            <class name="app.vercel.practice.pages.Dropdown" />
-            <class name="app.vercel.practice.pages.DynamicContent" />
-            <class name="app.vercel.practice.pages.ForgotPassword" />
-        </classes>
+             <class name="app.vercel.practice.pages.BasicAuth" />
+             <class name="app.vercel.practice.pages.BrokenImages" />
+             <class name="app.vercel.practice.pages.ChallengingDOM" />
+             <class name="app.vercel.practice.pages.Checkboxes" />
+             <class name="app.vercel.practice.pages.ContextMenu" />
+             <class name="app.vercel.practice.pages.DisappearingElements" />
+             <class name="app.vercel.practice.pages.DragAndDrop" />
+             <class name="app.vercel.practice.pages.DragAndDropCircles" />
+             <class name="app.vercel.practice.pages.Dropdown" />
+             <class name="app.vercel.practice.pages.DynamicContent" />
+             <class name="app.vercel.practice.pages.ForgotPassword" />
+         </classes>
 
-    </test>
-</suite>
+     </test>
+ </suite>

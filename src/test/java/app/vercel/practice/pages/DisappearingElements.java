@@ -1,6 +1,7 @@
 package app.vercel.practice.pages;
 
 import app.vercel.practice.base.VercelTestBase;
+import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -21,20 +22,20 @@ public class DisappearingElements extends VercelTestBase {
 
     @Test
     public void testText(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement header = driver.findElement(By.tagName("h3"));
+        WebElement header = Driver.getDriver().findElement(By.tagName("h3"));
         Assert.assertEquals(header.getText(), HEADER_TEXT, "Text of header" + MESSAGE_MATCH);
 
-        WebElement paragraph = driver.findElement(By.xpath("//div[@class='example']//p"));
+        WebElement paragraph = Driver.getDriver().findElement(By.xpath("//div[@class='example']//p"));
         Assert.assertEquals(paragraph.getText(), PARAGRAPH_TEXT, "Text of paragraph" + MESSAGE_MATCH);
     }
 
     @Test
     public void testDisappearingElements(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        List<WebElement> buttons = driver.findElements(By.xpath("//li[@class='random-item']//a"));
+        List<WebElement> buttons = Driver.getDriver().findElements(By.xpath("//li[@class='random-item']//a"));
 
         for (WebElement button : buttons){
             switch(button.getText()){

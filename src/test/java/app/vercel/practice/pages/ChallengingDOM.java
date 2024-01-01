@@ -1,6 +1,7 @@
 package app.vercel.practice.pages;
 
 import app.vercel.practice.base.VercelTestBase;
+import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -33,22 +34,22 @@ public class ChallengingDOM extends VercelTestBase {
 
     @Test
     public void testText(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement header = driver.findElement(By.tagName("h3"));
+        WebElement header = Driver.getDriver().findElement(By.tagName("h3"));
         Assert.assertEquals(header.getText(), HEADER_TEXT, "Text of header" + MESSAGE_MATCH);
-        WebElement paragraph = driver.findElement(By.xpath("//p[contains(text(), 'The hardest')]"));
+        WebElement paragraph = Driver.getDriver().findElement(By.xpath("//p[contains(text(), 'The hardest')]"));
         Assert.assertEquals(paragraph.getText(), PARAGRAPH_TEXT, "Text of paragraph" + MESSAGE_MATCH);
 
     }
     @Test
     public void testTable(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
         //String[] tableHeader = new String[7];
         String[][] table = new String[11][7];
 
-        WebElement rowHeader = driver.findElement(By.xpath("//th[text()='Lorem']//parent::tr"));
+        WebElement rowHeader = Driver.getDriver().findElement(By.xpath("//th[text()='Lorem']//parent::tr"));
         List<WebElement> rowHeaderOptions = rowHeader.findElements(By.tagName("th"));
 
 
@@ -56,7 +57,7 @@ public class ChallengingDOM extends VercelTestBase {
             table[0][i] = rowHeaderOptions.get(i).getText();
         }
 
-        List<WebElement> tableBodyRows = driver.findElements(By.xpath("//tbody//child::tr"));
+        List<WebElement> tableBodyRows = Driver.getDriver().findElements(By.xpath("//tbody//child::tr"));
         //i starts at 1 because row 0 is header row
         for (int i = 1; i < table.length; i++) {
             List<WebElement> tdList = tableBodyRows.get(i-1).findElements(By.tagName("td"));
@@ -72,22 +73,22 @@ public class ChallengingDOM extends VercelTestBase {
 
     @Test
     public void testCanvas(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        JavascriptExecutor js = (JavascriptExecutor) driver;
+        JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
         long answer = (long) js.executeScript("return result");
         //System.out.println(answer);
 
-        WebElement canvas = driver.findElement(By.xpath("//canvas[@id='canvas']"));
+        WebElement canvas = Driver.getDriver().findElement(By.xpath("//canvas[@id='canvas']"));
         Assert.assertFalse(canvas == null, "Canvas did load correctly");
         Assert.assertTrue(answer > 0, "Canvas was given result of javascript correctly to paint");
     }
 
     @Test
     public void testButtons(){
-        driver.get(pageURL);
+        Driver.getDriver().get(pageURL);
 
-        WebElement buttonContainer = driver.findElement(By.xpath("//div[@class='large-2 columns buttons']"));
+        WebElement buttonContainer = Driver.getDriver().findElement(By.xpath("//div[@class='large-2 columns buttons']"));
         List<WebElement> buttons = buttonContainer.findElements(By.tagName("a"));
         Assert.assertEquals(buttons.size(), 3, "Amount of buttons expected");
     }
