@@ -2,10 +2,7 @@ package com.loop.test.day9_tasks;
 
 import com.github.javafaker.Faker;
 import com.loop.test.utilities.Driver;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -14,6 +11,7 @@ import org.testng.annotations.Test;
 
 import com.loop.test.day9_tasks.RegistationEnums.*;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
@@ -40,6 +38,8 @@ public class Registration {
     @Test
     public void testRegistration() {
         //createEnum("//label[.='Jurisdiction *']//following-sibling::input", "//div[@class='v-menu__content theme--light menuable__content__active v-autocomplete__content']");
+
+
 
         //All indexes are here to minimize risk from code changes
         List<String> forms = new ArrayList<>();
@@ -96,6 +96,11 @@ public class Registration {
         WebElement messageBox = wait.until(d -> Driver.getDriver().findElement(By.xpath("//span[contains(., 'known test card')]")));
         Assert.assertEquals(messageBox.getText(), ERROR_KNOWN_TESTING_CARD);
 
+        try{
+            Thread.sleep(15000);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 

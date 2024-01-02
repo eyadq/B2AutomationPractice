@@ -22,6 +22,12 @@ public class DragAndDropCircles extends VercelTestBase {
     public void test(){
         Driver.getDriver().get(pageURL);
 
+        try{
+            Thread.sleep(15000);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
         WebElement target = Driver.getDriver().findElement(By.id("droptarget"));
         WebElement draggable = Driver.getDriver().findElement(By.id("draggable"));
         Assert.assertEquals(target.getText(), BEFORE_ACTION, "Target text before action" + MESSAGE_MATCH);
@@ -38,6 +44,7 @@ public class DragAndDropCircles extends VercelTestBase {
 
         actions.clickAndHold(draggable).moveToElement(target).perform();
         Driver.getDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+
         Assert.assertEquals(target.getText(), DURING_ACTION_ON_TARGET, "Target text during action" + MESSAGE_MATCH);
         Assert.assertEquals(target.getAttribute("class"), "k-header painted", "Class name of target when blue" + MESSAGE_MATCH);
 
