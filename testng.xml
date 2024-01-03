@@ -18,6 +18,7 @@
              <class name="app.vercel.practice.pages.DragAndDropCircles" />
              <class name="app.vercel.practice.pages.Dropdown" />
              <class name="app.vercel.practice.pages.DynamicContent" />
+             <class name="app.vercel.practice.pages.DynamicControls" />
              <class name="app.vercel.practice.pages.ForgotPassword" />
          </classes>
 

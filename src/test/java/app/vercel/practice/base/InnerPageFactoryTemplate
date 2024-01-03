@@ -1,0 +1,16 @@
+InnerPageFactory factory;
+class InnerPageFactory{
+        @FindBy(tagName = "h3")
+        WebElement header;
+        InnerPageFactory(){
+            PageFactory.initElements(Driver.getDriver(), this);}
+        static List<WebElement> getBoxes(){
+            return Driver.getDriver().findElements(By.cssSelector("div[class='column']"));
+        }
+}
+
+@BeforeMethod
+    public void setUpMethod(){
+        Driver.getDriver().get(pageURL);
+        factory = new InnerPageFactory();
+    }

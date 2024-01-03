@@ -5,10 +5,13 @@ import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Autocomplete extends VercelTestBase {
@@ -20,79 +23,73 @@ public class Autocomplete extends VercelTestBase {
     private static final String[] AUTOCOMPLETE_OPTIONS_SINGLE = {"Palestine"};
     private static final String[] AUTOCOMPLETE_OPTIONS_MULTIPLE = {"United Arab Emirates", "United Kingdom", "United States of America"};
     private static final String LOGGED_RESULT = "You selected: Palestine";
+    InnerPageFactory factory;
+    List<WebElement> listItems;
 
-    @Test
-    public void testHeader(){
-        Driver.getDriver().get(pageURL);
-        WebElement header = Driver.getDriver().findElement(By.tagName("h3"));
-        Assert.assertEquals(header.getText(), HEADER_TEXT, "Autocomplete header text");
+    class InnerPageFactory{
+
+        @FindBy(tagName = "h3")
+        WebElement header;
+
+        @FindBy(xpath = "//p[text()='Start typing:']")
+        WebElement paragraph;
+
+        @FindBy(id = "myCountry")
+        WebElement input;
+
+        @FindBy(css = "input[type='button']")
+        WebElement submitButton;
+        InnerPageFactory(){PageFactory.initElements(Driver.getDriver(), this);}
+
+        public List<WebElement> getAutoCompleteList(){
+            WebElement autocompleteListElement = null;
+            try{
+                autocompleteListElement = Driver.getDriver().findElement(By.id("myCountryautocomplete-list"));
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            if(autocompleteListElement==null)
+                return new ArrayList<WebElement>();
+            return autocompleteListElement.findElements(By.tagName("div"));
+        }
+
+        public WebElement getLog(){
+            return Driver.getDriver().findElement(By.cssSelector("p[id='result']"));
+        }
     }
 
-    @Test
-    public void testParagraph (){
+    @BeforeMethod
+    public void setupMethod(){
         Driver.getDriver().get(pageURL);
-        WebElement paragraph = Driver.getDriver().findElement(By.xpath("//p[text()='Start typing:']"));
-        Assert.assertEquals(paragraph.getText(), PARAGRAPH_TEXT, "Autocomplete parapgraph text");
+        factory = new InnerPageFactory();
+    }
+    @Test
+    public void testText(){
+        Assert.assertEquals(factory.header.getText(), HEADER_TEXT, "Autocomplete header text");
+        Assert.assertEquals(factory.paragraph.getText(), PARAGRAPH_TEXT, "Autocomplete paragraph text");
     }
 
     @Test
     public void testAutocomplete(){
-        Driver.getDriver().get(pageURL);
-        WebElement input = Driver.getDriver().findElement(By.id("myCountry"));
-        Assert.assertEquals(input.getAttribute("placeholder"), PLACEHOLDER_TEXT, "placeholder text for input");
+        Assert.assertEquals(factory.input.getAttribute("placeholder"), PLACEHOLDER_TEXT, "placeholder text for input");
 
-        WebElement autocompleteList;
-        autocompleteList = refreshAutoCompleteList();
+        //sendText("Palest");
+        factory.input.sendKeys("Palest");
+        Assert.assertEquals(factory.getAutoCompleteList().stream().map(each -> each.getText()).toArray(), AUTOCOMPLETE_OPTIONS_SINGLE, "Invalid country search returned results");
 
-        List<WebElement> listItems;
+        factory.input.sendKeys(Keys.ARROW_DOWN);
+        factory.input.sendKeys(Keys.ENTER);
+        factory.submitButton.click();
+        Assert.assertEquals(factory.getLog().getText(), LOGGED_RESULT, "Log after clicking submit");
 
-        listItems = sendText("Palest", input);
-        String[] actualOutputFromAutoComplete = new String[listItems.size()];
-        for (int i = 0; i < actualOutputFromAutoComplete.length; i++) {
-            actualOutputFromAutoComplete[i] = listItems.get(i).getText();
-        }
-        Assert.assertEquals(actualOutputFromAutoComplete, AUTOCOMPLETE_OPTIONS_SINGLE, "Invalid country search returned results");
-
-        //Test to click on search result
-        input.sendKeys(Keys.ARROW_DOWN);
-        input.sendKeys(Keys.ENTER);
-        WebElement submitButton = Driver.getDriver().findElement(By.cssSelector("input[type='button']"));
-        submitButton.click();
-
-        WebElement result = Driver.getDriver().findElement(By.cssSelector("p[id='result']"));
-
-        Assert.assertEquals(result.getText(), LOGGED_RESULT, "Log after clicking submit");
-
-
-        listItems = sendText("united", input);
-        String[] actualItems = new String[listItems.size()];
-        for (int i = 0; i < listItems.size(); i++) {
-            actualItems[i] = listItems.get(i).getText();
-        }
-         Assert.assertEquals(actualItems, AUTOCOMPLETE_OPTIONS_MULTIPLE, "Autocomplete options");
+        //sendText("united");
+        factory.input.sendKeys("united");
+        Assert.assertEquals(factory.getAutoCompleteList().stream().map(each -> each.getText()).toArray(), AUTOCOMPLETE_OPTIONS_MULTIPLE, "Autocomplete options");
 
     }
 
 
 
 
-    public WebElement refreshAutoCompleteList(){
-        WebElement autocompleteList = null;
-        try{
-            autocompleteList = Driver.getDriver().findElement(By.id("myCountryautocomplete-list"));
-        } catch (Exception e){
-            Assert.assertEquals(false, false, "Test if autocomplete exists by default");
-        }
-        return autocompleteList;
-    }
-
-    public List<WebElement> sendText(String str, WebElement inputField) {
-        inputField.clear();
-        inputField.sendKeys(str);
-        Driver.getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
-        WebElement autocompleteList = refreshAutoCompleteList();
-        return autocompleteList.findElements(By.tagName("div"));
-    }
 
 }

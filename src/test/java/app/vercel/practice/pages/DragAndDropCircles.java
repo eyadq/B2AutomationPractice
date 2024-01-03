@@ -5,9 +5,12 @@ import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class DragAndDropCircles extends VercelTestBase {
@@ -18,31 +21,43 @@ public class DragAndDropCircles extends VercelTestBase {
     private static final String DURING_ACTION_ON_TARGET = "Now drop...";
     private static final String AFTER_ACTION = "You did great!";
     private static final String WRONG_ACTION = "Try again!";
+    InnerPageFactory factory;
+    Actions actions;
+    class InnerPageFactory{
+        @FindBy(id = "page-footer")
+        WebElement footer;
+        @FindBy(id = "droptarget")
+        WebElement droptarget;
+        @FindBy(id = "draggable")
+        WebElement draggable;
+        InnerPageFactory(){
+            PageFactory.initElements(Driver.getDriver(), this);}
+    }
+
+    @BeforeMethod
+    public void setUpMethod(){
+        Driver.getDriver().get(pageURL);
+        factory = new InnerPageFactory();
+        actions = new Actions(Driver.getDriver());
+    }
     @Test
     public void test(){
-        Driver.getDriver().get(pageURL);
+        Assert.assertEquals(factory.droptarget.getText(), BEFORE_ACTION, "Target text before action" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.droptarget.getAttribute("class"), "k-header", "Class name of target when not blue" + MESSAGE_MATCH);
 
-        WebElement target = Driver.getDriver().findElement(By.id("droptarget"));
-        WebElement draggable = Driver.getDriver().findElement(By.id("draggable"));
-        Assert.assertEquals(target.getText(), BEFORE_ACTION, "Target text before action" + MESSAGE_MATCH);
-        Assert.assertEquals(target.getAttribute("class"), "k-header", "Class name of target when not blue" + MESSAGE_MATCH);
+        actions.dragAndDrop(factory.draggable, factory.footer).perform();
+        Assert.assertEquals(factory.droptarget.getText(), WRONG_ACTION, "Target text after wrong action" + MESSAGE_MATCH);
 
-        Actions actions = new Actions(Driver.getDriver());
+        actions.clickAndHold(factory.draggable).moveToLocation(200, 200).perform();
+        Assert.assertEquals(factory.droptarget.getText(), DURING_ACTION_OFF_TARGET, "Target text during action" + MESSAGE_MATCH);
 
-        WebElement footer = Driver.getDriver().findElement(By.id("page-footer"));
-        actions.dragAndDrop(draggable, footer).perform();
-        Assert.assertEquals(target.getText(), WRONG_ACTION, "Target text after wrong action" + MESSAGE_MATCH);
-
-        actions.clickAndHold(draggable).moveToLocation(200, 200).perform();
-        Assert.assertEquals(target.getText(), DURING_ACTION_OFF_TARGET, "Target text during action" + MESSAGE_MATCH);
-
-        actions.clickAndHold(draggable).moveToElement(target).perform();
+        actions.clickAndHold(factory.draggable).moveToElement(factory.droptarget).perform();
         Driver.getDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        Assert.assertEquals(target.getText(), DURING_ACTION_ON_TARGET, "Target text during action" + MESSAGE_MATCH);
-        Assert.assertEquals(target.getAttribute("class"), "k-header painted", "Class name of target when blue" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.droptarget.getText(), DURING_ACTION_ON_TARGET, "Target text during action" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.droptarget.getAttribute("class"), "k-header painted", "Class name of target when blue" + MESSAGE_MATCH);
 
-        actions.dragAndDrop(draggable, target).perform();
-        Assert.assertEquals(target.getText(), AFTER_ACTION, "Target text after action" + MESSAGE_MATCH);
-        Assert.assertEquals(target.getAttribute("class"), "k-header painted", "Class name of target when blue" + MESSAGE_MATCH);
+        actions.dragAndDrop(factory.draggable, factory.droptarget).perform();
+        Assert.assertEquals(factory.droptarget.getText(), AFTER_ACTION, "Target text after action" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.droptarget.getAttribute("class"), "k-header painted", "Class name of target when blue" + MESSAGE_MATCH);
     }
 }

@@ -7,6 +7,8 @@ import app.vercel.practice.utilities.LogUtil;
 import app.vercel.practice.utilities.SwingUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -18,22 +20,34 @@ public class BrokenImages extends VercelTestBase {
 
     private static final String pageURL = "https://loopcamp.vercel.app/broken-images.html";
     String filePathActual; //Determined in code
+    InnerPageFactory factory;
 
-    @Test
-    public void testImages() {
+    class InnerPageFactory{
+        @FindBy(xpath = "//div[@class='example']")
+        WebElement imageContainer;
+        InnerPageFactory(){PageFactory.initElements(Driver.getDriver(), this);}
+
+        List<WebElement> getImages(){
+            return factory.imageContainer.findElements(By.tagName("img"));
+        }
+    }
+
+    @BeforeMethod
+    public void setupMethod(){
         Driver.getDriver().get(pageURL);
-        WebElement imageContainer = Driver.getDriver().findElement(By.xpath("//div[@class='example']"));
-        List<WebElement> images = imageContainer.findElements(By.tagName("img"));
+        factory = new InnerPageFactory();
+    }
+    @Test
+    public void testAllImages() {
 
         int count = 0;
-        for (WebElement element : images) {
+        for (WebElement element : factory.getImages()) {
             String link = element.getAttribute("src");
             String fileExtension = link.substring(link.lastIndexOf('.'));
             if (!fileExtension.equals(".jpg")) {
                 LogUtil.logPrintMatch(fileExtension, "jpg", "image " + count + " file type");
                 //Assert.assertNotEquals(fileExtension, "jpg", "image " + count + " file type");
             } else {
-
 
                 filePathActual = FileUtil.downloadFile(link);
                 String checksumActual = FileUtil.getChecksum(filePathActual);
@@ -50,6 +64,8 @@ public class BrokenImages extends VercelTestBase {
         }
 
     }
+
+
 
 
 }

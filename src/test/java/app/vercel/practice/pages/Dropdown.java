@@ -1,15 +1,19 @@
 package app.vercel.practice.pages;
 
 import app.vercel.practice.base.VercelTestBase;
-import app.vercel.practice.utilities.DateUtil;
+import app.vercel.practice.utilities.*;
 import app.vercel.practice.enums.States;
-import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.net.URL;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.*;
 
 public class Dropdown extends VercelTestBase {
@@ -49,85 +53,92 @@ public class Dropdown extends VercelTestBase {
 
     private static final String STATE_DEFAULT_VALUE = "";
     private static final String STATE_DEFAULT_TEXT = "Select a State";
-    private static String[] birthDateExpected;
+    InnerPageFactory factory;
 
-    static {
-        birthDateExpected = DateUtil.getTodaysDate();
+
+    class InnerPageFactory{
+        @FindBy(tagName = "h3")
+        WebElement header;
+        @FindBy(id = "dropdown")
+        WebElement simple;
+        @FindBy(id = "year")
+        WebElement year;
+        @FindBy(id = "month")
+        WebElement month;
+        @FindBy(id = "day")
+        WebElement day;
+        @FindBy(id = "state")
+        WebElement state;
+        @FindBy(id = "dropdownMenuLink")
+        WebElement dropdownLinks;
+        InnerPageFactory(){
+            PageFactory.initElements(Driver.getDriver(), this);}
+        static List<WebElement> getSmallHeaders(){
+            return Driver.getDriver().findElements(By.tagName("h6"));
+        }
+        static List<WebElement> getListLinks(){ return Driver.getDriver().findElements(By.xpath("//a[@class='dropdown-item']")); }
+
+        void setDate(LocalDate date){
+            new Select(year).selectByValue("" + date.getYear());
+            new Select(month).selectByValue("" + (date.getMonth().getValue()-1)); //months in java.time.Month start at 1
+            new Select(day).selectByValue("" + date.getDayOfMonth());
+        }
+
+        LocalDate getDate(){
+            String yearCurrent = new Select(year).getFirstSelectedOption().getText();
+            String monthCurrent = new Select(month).getFirstSelectedOption().getAttribute("value");
+            String dayCurrent = new Select(day).getFirstSelectedOption().getText();
+
+            return LocalDate.of(
+                    Integer.parseInt(yearCurrent),
+                    Integer.parseInt(monthCurrent) +1, //months in java.time.Month start at 1
+                    Integer.parseInt(dayCurrent)
+            );
+        }
+    }
+
+    @BeforeMethod
+    public void setUpMethod(){
+        Driver.getDriver().get(pageURL);
+        factory = new InnerPageFactory();
     }
 
     @Test
     public void testHeaders(){
-        Driver.getDriver().get(pageURL);
-
-        WebElement headerMain = Driver.getDriver().findElement(By.tagName("h3"));
-        Assert.assertEquals(headerMain.getText(), MAIN_HEADER_TEXT, "Text of main header" + MESSAGE_MATCH);
-        List<WebElement> headerSize6 = Driver.getDriver().findElements(By.tagName("h6"));
-        for (int i = 0; i < headerSize6.size(); i++) {
-            Assert.assertEquals(headerSize6.get(i).getText(), SMALLER_HEADER_TEXTS[i], "Smaller header " + i + " text" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.header.getText(), MAIN_HEADER_TEXT, "Text of main header" + MESSAGE_MATCH);
+        for (int i = 0; i < factory.getSmallHeaders().size(); i++) {
+            Assert.assertEquals(factory.getSmallHeaders().get(i).getText(), SMALLER_HEADER_TEXTS[i], "Smaller header " + i + " text" + MESSAGE_MATCH);
         }
     }
 
     @Test
     public void testDropdownSimple(){
-        Driver.getDriver().get(pageURL);
-
-        Select simple = new Select(Driver.getDriver().findElement(By.id("dropdown")));
-        List<WebElement> simpleOptions = simple.getOptions();
-        for (int i=0; i<simpleOptions.size(); i++){
+        List<WebElement> simpleOptions = new Select(factory.simple).getOptions();
+        for (int i=0; i<simpleOptions.size(); i++)
             Assert.assertEquals(simpleOptions.get(i).getText(), SIMPLE_OPTIONS[i], "Text of option " + i + MESSAGE_MATCH );
-        }
     }
 
     @Test
     public void testDropDownBirth(){
-        Driver.getDriver().get(pageURL);
+        Select dropdownYear = new Select(factory.year);
+        Assert.assertEquals(Arrays.toString(dropdownYear.getOptions().stream().map(each-> each.getText()).toArray()), Arrays.toString(ArrayUtil.getIntArray(LocalDate.now().getYear()-99, LocalDate.now().getYear())), "Options in year dropdown" + MESSAGE_MATCH);
 
-        String[] todaysDate = DateUtil.getTodaysDate();
+        Select dropdownMonth = new Select(factory.month);
+        Assert.assertEquals(Arrays.toString(dropdownMonth.getOptions().stream().map(each-> each.getText()).toArray()), Arrays.toString(Arrays.stream(Month.values()).map(each-> StringUtil.toNameCase(each.toString())).toArray()), "Options in month dropdown" + MESSAGE_MATCH);
 
-        Select dropdownYear = new Select(Driver.getDriver().findElement(By.id("year")));
-        String[] yearOptions = new String[dropdownYear.getOptions().size()];
-        for (int i=0; i<yearOptions.length; i++){
-            yearOptions[i] = dropdownYear.getOptions().get(i).getText();
-        }
-        Assert.assertEquals(Arrays.toString(yearOptions), Arrays.toString(DateUtil.getIntArray(1924, 2023)), "Options in year dropdwon" + MESSAGE_MATCH);
+        Select dropdownDay = new Select(factory.day);
+        Assert.assertEquals(dropdownDay.getOptions().size(), Month.of(Integer.parseInt(dropdownMonth.getFirstSelectedOption().getAttribute("value")) + 1).length(DateUtil.isLeapYear()), "Options in days dropdown matches expected value of current month" + MESSAGE_MATCH);
 
-        Select dropdownMonth = new Select(Driver.getDriver().findElement(By.id("month")));
-        String[] monthOptions = new String[dropdownMonth.getOptions().size()];
-        for (int i = 0; i < monthOptions.length; i++) {
-            monthOptions[i] = dropdownMonth.getOptions().get(i).getText();
-        }
-        Assert.assertEquals(Arrays.toString(monthOptions), Arrays.toString(DateUtil.getMonths()), "Options in month dropdown" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.getDate(), LocalDate.now() , "Default birth date while looking at all three birth date dropdowns together is expected to be today's date" + MESSAGE_MATCH);
 
-
-        Select dropdownDay = new Select(Driver.getDriver().findElement(By.id("day")));
-        int numberOfDaysActual = dropdownDay.getOptions().size();
-        int numberOfDaysExpected = DateUtil.getNumberDaysInMonth(todaysDate[1]);
-        Assert.assertEquals(numberOfDaysActual, numberOfDaysExpected, "Options in days dropdown" + MESSAGE_MATCH);
-
-
-        String[] birthDateActual = new String[]{
-                dropdownYear.getFirstSelectedOption().getText(),
-                dropdownMonth.getFirstSelectedOption().getText(),
-                dropdownDay.getFirstSelectedOption().getText()
-        };
-
-        Assert.assertEquals(Arrays.toString(birthDateActual), Arrays.toString(birthDateExpected) , "Default birth date while looking at all three birth date dropdwons together" + MESSAGE_MATCH);
-
-        String[] randomDate = DateUtil.getRandomDate();
-        dropdownYear.selectByValue(randomDate[0]);
-        dropdownMonth.selectByValue("" + DateUtil.getMonths(randomDate[1]));
-        dropdownDay.selectByValue(randomDate[2]);
-
-        Assert.assertEquals(dropdownYear.getFirstSelectedOption().getText(), randomDate[0], "Year after setting random" + MESSAGE_MATCH);
-        Assert.assertEquals(dropdownMonth.getFirstSelectedOption().getText(), randomDate[1], "Month after setting random" + MESSAGE_MATCH);
-        Assert.assertEquals(dropdownDay.getFirstSelectedOption().getText(), randomDate[2], "Day after setting random" + MESSAGE_MATCH);
+        LocalDate randomDate = DateUtil.getRandomDate();
+        factory.setDate(randomDate);
+        Assert.assertEquals(factory.getDate(), randomDate, "Date dropdowns were set to that random date " + MESSAGE_MATCH);
     }
 
     @Test
     public void testDropDownState(){
-        Driver.getDriver().get(pageURL);
-
-        Select dropDownStates = new Select(Driver.getDriver().findElement(By.id("state")));
+        Select dropDownStates = new Select(factory.state);
 
         Assert.assertEquals(dropDownStates.getFirstSelectedOption().getAttribute("value"), STATE_DEFAULT_VALUE, "Default option for state" + MESSAGE_MATCH);
         Assert.assertEquals(dropDownStates.getFirstSelectedOption().getText(), STATE_DEFAULT_TEXT, "Default text for state" + MESSAGE_MATCH);
@@ -145,10 +156,7 @@ public class Dropdown extends VercelTestBase {
 
     @Test
     public void testDropdownLanguages(){
-        Driver.getDriver().get(pageURL);
-
-        Select languages = new Select(Driver.getDriver().findElement(By.name("Languages")));
-        List<WebElement> options = languages.getOptions();
+        List<WebElement> options = new Select(Driver.getDriver().findElement(By.name("Languages"))).getOptions();
 
         options.forEach(each -> Assert.assertFalse(each.isSelected(), "Default state for languages option should be false") );
 
@@ -164,24 +172,6 @@ public class Dropdown extends VercelTestBase {
 
     @Test
     public void testDropdownLinks(){
-        Driver.getDriver().get(pageURL);
-
-        WebElement dropdownLinks = Driver.getDriver().findElement(By.xpath("//a[@id='dropdownMenuLink']"));
-        dropdownLinks.click();
-
-        WebElement linksMenu = Driver.getDriver().findElement(By.xpath("//div[@aria-labelledby='dropdownMenuLink']"));
-        List<WebElement> options = Driver.getDriver().findElements(By.xpath("//a[@class='dropdown-item']"));
-
-        Random random = new Random();
-        int randomNum = random.nextInt(5);
-        while(randomNum==0){
-            randomNum = random.nextInt(5);
-        }
-        String text = options.get(randomNum).getText().toLowerCase();
-        Driver.getDriver().navigate().to(options.get(randomNum).getAttribute("href"));
-        String newTitle = Driver.getDriver().getTitle().toLowerCase();
-        Assert.assertTrue(newTitle.contains(text), "Text in tags matches link" + MESSAGE_MATCH);
-
-
+        factory.getListLinks().forEach(each-> Assert.assertTrue(BrowserUtil.verifyUrl(each.getAttribute("href")), "URL is not valid"));
     }
 }

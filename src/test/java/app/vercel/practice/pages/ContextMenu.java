@@ -4,6 +4,8 @@ import app.vercel.practice.base.VercelTestBase;
 import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -18,33 +20,35 @@ public class ContextMenu extends VercelTestBase {
             "Context menu items are custom additions that appear in the right-click menu.",
             "Right-click in the box below to see one called 'the-internet'. When you click it, it will trigger a JavaScript alert."
             };
+    InnerPageFactory factory;
+    class InnerPageFactory{
+        @FindBy(tagName = "h3")
+        WebElement header;
+        @FindBy(css = "div[id='hot-spot']")
+        WebElement bigBox;
+        InnerPageFactory(){
+            PageFactory.initElements(Driver.getDriver(), this);}
+        static List<WebElement> getParagraphs(){
+            return Driver.getDriver().findElements(By.xpath("//div[@class='example']//following-sibling::p"));
+        }
+    }
+    @BeforeMethod
+    public void setUpMethod(){
+        Driver.getDriver().get(pageURL);
+        factory = new InnerPageFactory();
+    }
     @Test
     public void testText(){
-        Driver.getDriver().get(pageURL);
+        Assert.assertEquals(factory.header.getText(), CONTEXT_MENU_HEADER, "Contextmenu paragraph text " + MESSAGE_MATCH);
 
-        ////div[@class='example']//following-sibling::p
-        WebElement header = Driver.getDriver().findElement(By.tagName("h3"));
-        Assert.assertEquals(header.getText(), CONTEXT_MENU_HEADER, "Contextmenu paragraph text " + MESSAGE_MATCH);
+        for (int i = 0; i < factory.getParagraphs().size(); i++)
+            Assert.assertEquals(factory.getParagraphs().get(i).getText(), CONTEXT_MENU_PARAGRAPHS[i], "paragraph text " + i + MESSAGE_MATCH);
 
-        List<WebElement> paragraphs = Driver.getDriver().findElements(By.xpath("//div[@class='example']//following-sibling::p"));
-
-        for (int i = 0; i < paragraphs.size(); i++) {
-            WebElement sentence = paragraphs.get(i);
-            Assert.assertEquals(sentence.getText(), CONTEXT_MENU_PARAGRAPHS[i], "paragraph text " + i + MESSAGE_MATCH);
-        }
     }
 
     @Test
-    public void testContextMenu() throws InterruptedException {
-        Driver.getDriver().get(pageURL);
-
-        WebElement theBoxThing = Driver.getDriver().findElement(By.cssSelector("div[id='hot-spot']"));
-        Actions action = new Actions(Driver.getDriver());
-        action.contextClick(theBoxThing).perform();
-
-        Alert alert = Driver.getDriver().switchTo().alert();
-        alert.accept();
-
-
+    public void testContextMenu() {
+        new Actions(Driver.getDriver()).contextClick(factory.bigBox).perform();
+        Driver.getDriver().switchTo().alert().accept();
     }
 }
