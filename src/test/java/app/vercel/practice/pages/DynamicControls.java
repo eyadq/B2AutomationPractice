@@ -1,14 +1,18 @@
 package app.vercel.practice.pages;
 
 import app.vercel.practice.base.VercelTestBase;
+import app.vercel.practice.utilities.BrowserUtil;
 import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -25,69 +29,72 @@ public class DynamicControls extends VercelTestBase {
     private static final String HEADER_ENABLE_DISABLE = "Enable/disable";
     private static final String INPUT_MESSAGE_ENABLED = "It's enabled!";
     private static final String INPUT_MESSAGE_DISABLED = "It's disabled!";
+    InnerPageFactory factory;
+    class InnerPageFactory{
+        @FindBy(xpath = "//h4[contains(text(), 'Dynamic')]")
+        WebElement header;
+        @FindBy(tagName = "p")
+        WebElement paragraph;
+        @FindBy(xpath = "//h4[contains(text(), 'Remove')]")
+        WebElement checkboxExample;
+        @FindBy(tagName = "checkbox")
+        WebElement checkbox;
+        @FindBy(xpath = "//button[text()='Remove']")
+        WebElement removeButton;
+        @FindBy(xpath = "//button[text()='Add']")
+        WebElement addButton;
+        @FindBy(xpath = "//h4[contains(text(), 'Enable')]")
+        WebElement inputExample;
+        @FindBy(id = "message")
+        WebElement message;
+        @FindBy(xpath = "//button[text()='Enable']")
+        WebElement enableButton;
+        @FindBy(xpath = "//button[text()='Disable']")
+        WebElement disableButton;
+        @FindBy(xpath = "//input[@type='text']")
+        WebElement input;
+        InnerPageFactory(){
+            PageFactory.initElements(Driver.getDriver(), this);}
+        static String getMessageText(){
+            return Driver.getDriver().findElement(By.xpath("//p[@id='message']")).getText();
+        }
+        static List<WebElement> getLoadingBars(){
+            return Driver.getDriver().findElements(By.xpath("//div[@id='loading']"));
+        }
+    }
+
+    @BeforeMethod
+    public void setUpMethod(){
+        Driver.getDriver().get(pageURL);
+        factory = new InnerPageFactory();
+    }
+
 
     @Test
     public void testText(){
-        Driver.getDriver().get(pageURL);
-
-        WebElement header = Driver.getDriver().findElement(By.xpath("//h4[contains(text(), 'Dynamic')]"));
-        Assert.assertEquals(header.getText(), HEADER_TEXT, "Text of message after disabling checkbox" + MESSAGE_MATCH);
-
-        //WebElement paragraph = Driver.getDriver().findElement(By.tagName("//p[contains(text(), 'This')]"));
-        WebElement paragraph = Driver.getDriver().findElement(By.tagName("p"));
-        Assert.assertEquals(paragraph.getText(), PARAGRAPH_TEXT, "Text of message after disabling checkbox" + MESSAGE_MATCH);
-
-        WebElement checkboxExample = Driver.getDriver().findElement(By.xpath("//h4[contains(text(), 'Remove')]"));
-        Assert.assertEquals(checkboxExample.getText(), HEADER_REMOVE_ADD, "Text of message after disabling checkbox" + MESSAGE_MATCH);
-
-        WebElement inputExample = Driver.getDriver().findElement(By.xpath("//h4[contains(text(), 'Enable')]"));
-        Assert.assertEquals(inputExample.getText(), HEADER_ENABLE_DISABLE, "Text of message after disabling checkbox" + MESSAGE_MATCH);
-
-
-
-
+        Assert.assertEquals(factory.header.getText(), HEADER_TEXT, "Text of message after disabling checkbox" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.paragraph.getText(), PARAGRAPH_TEXT, "Text of message after disabling checkbox" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.checkboxExample.getText(), HEADER_REMOVE_ADD, "Text of message after disabling checkbox" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.inputExample.getText(), HEADER_ENABLE_DISABLE, "Text of message after disabling checkbox" + MESSAGE_MATCH);
     }
     @Test
     public void testCheckBoxExample(){
         Driver.getDriver().get(pageURL);
 
-        WebElement checkbox = Driver.getDriver().findElement(By.tagName("input"));
-        WebElement button = Driver.getDriver().findElement(By.xpath("//button[text()='Remove']"));
-        button.click();
+         factory.removeButton.click();
 
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.invisibilityOf(checkbox));
+        Assert.assertFalse(BrowserUtil.doesElementExist(factory.checkbox), "New checkbox should not appear yet");
 
-        boolean newCheckBoxExists = false;
-        WebElement newCheckbox = null;
-        try{
-            newCheckbox = Driver.getDriver().findElement(By.xpath("input[@type='checkbox']"));
-            if(newCheckBoxExists)
-                newCheckBoxExists = true;
-        } catch (NoSuchElementException e){
-            //the next assertFalse handles the new checkbox existing at this time
-        }
-        Assert.assertFalse(newCheckBoxExists, "New checkbox should not appear yet");
+        Assert.assertEquals(factory.getMessageText(), CHECKBOX_MESSAGE_DISABLED, "Text of message after disabling checkbox" + MESSAGE_MATCH);
 
-        WebElement message = Driver.getDriver().findElement(By.xpath("//p[@id='message']"));
-        Assert.assertEquals(message.getText(), CHECKBOX_MESSAGE_DISABLED, "Text of message after disabling checkbox" + MESSAGE_MATCH);
+        factory.addButton.click();
+        factory.checkbox = wait.until(d-> Driver.getDriver().findElement(By.xpath("//input[@type='checkbox']")));
+        Assert.assertTrue(BrowserUtil.doesElementExist(factory.checkbox), "Checkbox should be back so method should return true");
 
-        button.click();
-        try{
-            wait.until(d-> Driver.getDriver().findElement(By.xpath("//input[@type='checkbox']")));
-            newCheckbox = Driver.getDriver().findElement(By.xpath("//input[@type='checkbox']"));
-        } catch (TimeoutException e){
-            System.out.println("Timed out");
-        } catch (NoSuchElementException e){
-            System.out.println("Did not find the checkbox");
-        }
-        String textActual = newCheckbox.getText();
-        Assert.assertEquals(newCheckbox.getAttribute("id"), "checkbox");
+        Assert.assertEquals(factory.message.getText(), CHECKBOX_MESSAGE_ENABLED, "Text of message after re-enabling checkbox" + MESSAGE_MATCH);
 
-        message = Driver.getDriver().findElement(By.xpath("//p[@id='message']"));
-        Assert.assertEquals(message.getText(), CHECKBOX_MESSAGE_ENABLED, "Text of message after re-enabling checkbox" + MESSAGE_MATCH);
-
-        List<WebElement> loadingBars = Driver.getDriver().findElements(By.xpath("//div[@id='loading']"));
+        List<WebElement> loadingBars = factory.getLoadingBars();
         for (WebElement loadingBar : loadingBars){
             Assert.assertFalse(loadingBar.isDisplayed(), "All loading bars should be hidden at this point yet exist in the DOM");
         }
@@ -95,27 +102,19 @@ public class DynamicControls extends VercelTestBase {
 
     @Test
     public void testInputExample(){
-        Driver.getDriver().get(pageURL);
+        Assert.assertFalse(factory.input.isEnabled(), "Input should be disabled before clicking enable");
 
-        WebElement button = Driver.getDriver().findElement(By.xpath("//button[text()='Enable']"));
-        WebElement input = Driver.getDriver().findElement(By.xpath("//input[@type='text']"));
-        Assert.assertFalse(input.isEnabled(), "Input should be disabled before clicking enable");
-
-
-        button.click();
+        factory.enableButton.click();
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(5));
-        wait.until(d-> input.isEnabled());
-        Assert.assertTrue(input.isEnabled(), "Input should be enabled after clicking enable");
+        wait.until(d-> factory.input.isEnabled());
+        Assert.assertTrue(factory.input.isEnabled(), "Input should be enabled after clicking enable");
+        Assert.assertEquals(factory.getMessageText(), INPUT_MESSAGE_ENABLED, "Text of message after enabling input" + MESSAGE_MATCH);
 
-        WebElement message = Driver.getDriver().findElement(By.xpath("//p[@id='message']"));
-        Assert.assertEquals(message.getText(), INPUT_MESSAGE_ENABLED, "Text of message after enabling input" + MESSAGE_MATCH);
+        factory.disableButton.click();
+        wait.until(d-> !factory.input.isEnabled());
+        Assert.assertEquals(factory.getMessageText(), INPUT_MESSAGE_DISABLED, "Text of message after disabling input" + MESSAGE_MATCH);
 
-        button.click();
-        wait.until(d-> !input.isEnabled());
-        message = Driver.getDriver().findElement(By.xpath("//p[@id='message']"));
-        Assert.assertEquals(message.getText(), INPUT_MESSAGE_DISABLED, "Text of message after disabling input" + MESSAGE_MATCH);
-
-        List<WebElement> loadingBars = Driver.getDriver().findElements(By.xpath("//div[@id='loading']"));
+        List<WebElement> loadingBars = factory.getLoadingBars();
         for (WebElement loadingBar : loadingBars){
             Assert.assertFalse(loadingBar.isDisplayed(), "All loading bars should be hidden at this point yet exist in the DOM");
         }

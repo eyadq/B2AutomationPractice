@@ -1,65 +1,76 @@
 package app.vercel.practice.pages;
 
 import app.vercel.practice.base.VercelTestBase;
+import app.vercel.practice.utilities.BrowserUtil;
 import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 public class ForgotPassword extends VercelTestBase {
 
     private static final String pageURL = "https://loopcamp.vercel.app/forgot-password.html";
     private static final String HEADER_TEXT = "Forgot Password";
     private static final String EMAIL_TEXT = "E-mail";
-    private static final String EMAIL_INPUT_ID = "email";
     private static final String RETRIEVE_PASSWORD_BUTTON_TEXT = "Retrieve password";
     private static final String ERROR_MESSAGE = "Invalid email";
 
-
-    @Test
-    public void testHeader(){
-        Driver.getDriver().get(pageURL);
-
-        WebElement forgotPasswordHeader = Driver.getDriver().findElement(By.tagName("h2"));
-        Assert.assertEquals(forgotPasswordHeader.getText(), HEADER_TEXT, "Forgot password header text" + MESSAGE_MATCH);
+    public static final String EMAIL_VALID = "jdoe@gmail.com";
+    public static final String EMAIL_INVALID = "jdoegmail.com";
+    InnerPageFactory factory;
+    class InnerPageFactory{
+        @FindBy(tagName = "h2")
+        WebElement header;
+        @FindBy(css = "label[for='email']")
+        WebElement labelEmail;
+        @FindBy(id = "email")
+        WebElement input;
+        @FindBy(id = "form_submit")
+        WebElement button;
+        @FindBy(className = "alert")
+        WebElement message;
+        InnerPageFactory(){
+            PageFactory.initElements(Driver.getDriver(), this);}
+        static List<WebElement> getBoxes(){
+            return Driver.getDriver().findElements(By.cssSelector("div[class='column']"));
+        }
     }
 
-    @Test
-    public void testParagraph(){
+    @BeforeMethod
+    public void setUpMethod(){
         Driver.getDriver().get(pageURL);
+        factory = new InnerPageFactory();
+    }
 
-        WebElement emailLabel = Driver.getDriver().findElement(By.cssSelector("label[for='email']"));
-        Assert.assertEquals(emailLabel.getText(), EMAIL_TEXT, "Email label text" + MESSAGE_MATCH);
+
+
+    @Test
+    public void testText(){
+        Assert.assertEquals(factory.header.getText(), HEADER_TEXT, "Forgot password header text" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.labelEmail.getText(), EMAIL_TEXT, "Email label text" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.button.getText(), RETRIEVE_PASSWORD_BUTTON_TEXT, "Text of retrieve password button" + MESSAGE_MATCH);
     }
     @Test
     public void testFieldAndButton(){
-        Driver.getDriver().get(pageURL);
+        factory.input.sendKeys(EMAIL_INVALID);
+        factory.button.click();
+        Assert.assertEquals(factory.message.getText(), ERROR_MESSAGE, "Invalid email error message text" + MESSAGE_MATCH);
 
-        WebElement emailInput = Driver.getDriver().findElement(By.cssSelector("input[name='email']"));
-        Assert.assertEquals(emailInput.getAttribute("id"), EMAIL_INPUT_ID, "Email input attribute" + MESSAGE_MATCH);
-
-        WebElement button = Driver.getDriver().findElement(By.cssSelector("button[type='submit']"));
-        Assert.assertEquals(button.getText(), RETRIEVE_PASSWORD_BUTTON_TEXT, "Text of retrieve password button" + MESSAGE_MATCH);
-
-        emailInput.sendKeys(EMAIL_INVALID);
-        button.click();
-
-        WebElement badEmailAlert = Driver.getDriver().findElement(By.cssSelector("div[class='alert alert-danger'"));
-        Assert.assertEquals(badEmailAlert.getText(), ERROR_MESSAGE, "Invalid email error message text" + MESSAGE_MATCH);
-
-        emailInput.sendKeys(EMAIL_VALID);
-        button.click();
-
-        boolean errorMessageGone = false;
+        factory.input.sendKeys(EMAIL_VALID);
+        factory.button.click();
+        boolean messageStillExists = true;
         try{
-            badEmailAlert.getText();
-        } catch (StaleElementReferenceException e){
-            errorMessageGone = true;
-
-        } finally {
-            Assert.assertTrue(errorMessageGone, "Error message did not go away after inputting valid text");
+            BrowserUtil.implicitWait(0);
+            factory.message.getText();
+        } catch (Exception e){
+            messageStillExists = false;
         }
+        Assert.assertFalse(messageStillExists, "Message should not exist with valid email input");
     }
 }

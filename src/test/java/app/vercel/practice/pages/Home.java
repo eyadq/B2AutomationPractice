@@ -4,18 +4,25 @@ import app.vercel.practice.base.VercelTestBase;
 import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Home extends VercelTestBase {
 
     private static final String pageURL = "https://loopcamp.vercel.app/index.html";
+    public static final String IMAGE_URL_LOGO_LOOP = "https://loopcamp.vercel.app/img/logo.svg";
+    public static final String IMAGE_URL_LOGO_ACADEMY = "https://loopcamp.vercel.app/img/logo-text.svg";
+
+    public static final String MAIN_FOOTER_POWERED_BY_LOOPCAMP = "Powered by LOOPCAMP";
     private static final String HEADER_TEST_AUTOMATION_PRACTICE = "Test Automation Practice";
     private static final String HEADER_AVAILABLE_EXAMPLES = "Available Examples";
-    private static final String PAGE_CONTENT =
+    private static final String LIST_OF_EXAMPLES =
             "A/B Testing\n" +
             "Add/Remove Elements\n" +
             "Autocomplete\n" +
@@ -117,76 +124,57 @@ public class Home extends VercelTestBase {
                     "\tTypos has link of https://loopcamp.vercel.app/typos.html\n" +
                     "\tWYSIWYG Editor has link of https://loopcamp.vercel.app/tinymce.html\n" +
                     "\tWeb Tables has link of https://loopcamp.vercel.app/web-tables.html";
-    @Test
-    public void testHeaderImageLoop(){
-        Driver.getDriver().get(pageURL);
 
-        WebElement logoLoop = Driver.getDriver().findElement(By.xpath("//img[@src='./img/logo.svg']"));
-        String imagePathLoopActual = logoLoop.getAttribute("src");;
-        Assert.assertEquals(imagePathLoopActual, IMAGE_URL_LOGO_LOOP, ":oop image link" + MESSAGE_MATCH);
+    InnerPageFactory factory;
+    class InnerPageFactory{
+        @FindBy(xpath = "//img[@src='./img/logo.svg']")
+        WebElement headerImageLoop;
+        @FindBy(xpath = "//img[@src='./img/logo-text.svg']")
+        WebElement headerImageAcademy;
+        @FindBy(xpath = "//span[@class='h1y']")
+        WebElement header;
+        @FindBy(xpath = "//span[@class='h2 mb-4']")
+        WebElement subHeader;
+        @FindBy(css = "ul[class='list-group list-group-flush']")
+        WebElement exampleList;
+        @FindBy(css = "div[style='text-align: center;margin-bottom: 40px']")
+        WebElement footer;
+        InnerPageFactory(){
+            PageFactory.initElements(Driver.getDriver(), this);}
+        static List<WebElement> getPracticeExamplesText(){
+            return Driver.getDriver().findElements(By.className("list-group-item"));
+        }
+        static List<WebElement> getPracticeExamplesLinks(){
+            return Driver.getDriver().findElements(By.cssSelector("li[class='list-group-item']>a"));
+        }
+    }
+
+    @BeforeMethod
+    public void setUpMethod(){
+        Driver.getDriver().get(pageURL);
+        factory = new InnerPageFactory();
     }
 
     @Test
-    public void testHeaderImageAcademy(){
-        Driver.getDriver().get(pageURL);
+    public void testHeadersAndFooter(){
+        Assert.assertEquals(factory.headerImageLoop.getAttribute("src"), IMAGE_URL_LOGO_LOOP, ":oop image link" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.headerImageAcademy.getAttribute("src"), IMAGE_URL_LOGO_ACADEMY, "Academy image link" + MESSAGE_MATCH);
 
-        WebElement logoAcademy= Driver.getDriver().findElement(By.xpath("//img[@src='./img/logo-text.svg']"));
-        String imagePathAcademyActual = logoAcademy.getAttribute("src");
-        Assert.assertEquals(imagePathAcademyActual, IMAGE_URL_LOGO_ACADEMY, "Academy image link" + MESSAGE_MATCH);
-    }
+        Assert.assertEquals(factory.header.getText(), HEADER_TEST_AUTOMATION_PRACTICE, "Test automation practice header text" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.subHeader.getText(), HEADER_AVAILABLE_EXAMPLES,  "Available practice header text" + MESSAGE_MATCH);
 
-    @Test
-    public void testHeaderAutomationPractice(){
-        Driver.getDriver().get(pageURL);
-
-        WebElement testAutomationPractice = Driver.getDriver().findElement(By.cssSelector("span[class='h1y']"));
-        Assert.assertEquals(testAutomationPractice.getText(), HEADER_TEST_AUTOMATION_PRACTICE, "Test automation practice header text" + MESSAGE_MATCH);
-    }
-
-    @Test
-    public void testHeaderAvailableExamples(){
-        Driver.getDriver().get(pageURL);
-
-        WebElement availableExamples = Driver.getDriver().findElement(By.cssSelector("span[class='h2 mb-4']"));
-        Assert.assertEquals(availableExamples.getText(), HEADER_AVAILABLE_EXAMPLES,  "Available practice header text" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.footer.getText(), MAIN_FOOTER_POWERED_BY_LOOPCAMP, "Powered by loopcamp footer text" + MESSAGE_MATCH);
     }
 
     @Test
     public void testBodyContent(){
-        Driver.getDriver().get(pageURL);
+        Assert.assertEquals(factory.exampleList.getText(), LIST_OF_EXAMPLES, "Text of home page content" + MESSAGE_MATCH);
+        List<WebElement> listExamples = factory.getPracticeExamplesText();
+        List<WebElement> itemLinks = factory.getPracticeExamplesLinks();
 
-        WebElement unorderedList = Driver.getDriver().findElement(By.cssSelector("ul[class='list-group list-group-flush']"));
-        Assert.assertEquals(unorderedList.getText(), PAGE_CONTENT, "Text of home page content" + MESSAGE_MATCH);
-    }
-
-    @Test
-    public void testLinks() {
-        Driver.getDriver().get(pageURL);
-
-        List<WebElement> listItems = Driver.getDriver().findElements(By.className("list-group-item"));
-        List<WebElement> itemLinks = Driver.getDriver().findElements(By.cssSelector("li[class='list-group-item']>a"));
         String actual = "";
-        for (int i = 0; i < listItems.size(); i++) {
-            actual += "\n\t" + listItems.get(i).getText() + " has link of " + itemLinks.get(i).getAttribute("href");
-        }
-            Assert.assertEquals(actual, HOME_LINKS, "Links for practice items" + MESSAGE_MATCH);
-
-            Random random = new Random();
-            int number = random.nextInt(50);
-            String expectedURL = itemLinks.get(number).getAttribute("href");
-            itemLinks.get(number).click();
-
-            String actualURL = Driver.getDriver().getCurrentUrl();
-            Assert.assertEquals(actualURL, expectedURL);
-
-
-    }
-
-    @Test
-    public void testFooterImageText () {
-        Driver.getDriver().get(pageURL);
-
-        WebElement poweredByLoopcamp = Driver.getDriver().findElement(By.cssSelector("div[style='text-align: center;margin-bottom: 40px']"));
-        Assert.assertEquals(poweredByLoopcamp.getText(), MAIN_FOOTER_POWERED_BY_LOOPCAMP, "Powered by loopcamp footer text" + MESSAGE_MATCH);
+        for (int i = 0; i < itemLinks.size(); i++)
+            actual += "\n\t" + listExamples.get(i).getText() + " has link of " + itemLinks.get(i).getAttribute("href");
+        Assert.assertEquals(actual, HOME_LINKS, "Links for practice items" + MESSAGE_MATCH);
     }
 }

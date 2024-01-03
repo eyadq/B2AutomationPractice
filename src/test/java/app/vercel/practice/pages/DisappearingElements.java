@@ -4,6 +4,8 @@ import app.vercel.practice.base.VercelTestBase;
 import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -19,6 +21,22 @@ public class DisappearingElements extends VercelTestBase {
     private static final String CONTACT_US = "https://loopcamp.vercel.app/contact-us/index.html";
     private static final String PORTFOLIO = "https://loopcamp.vercel.app/portfolio/index.html";
     private static final String GALLERY = "https://loopcamp.vercel.app/gallery/index.html";
+    InnerPageFactory factory;
+    class InnerPageFactory{
+        @FindBy(tagName = "h3")
+        WebElement header;
+        InnerPageFactory(){
+            PageFactory.initElements(Driver.getDriver(), this);}
+        static List<WebElement> getBoxes(){
+            return Driver.getDriver().findElements(By.cssSelector("div[class='column']"));
+        }
+    }
+
+    @BeforeMethod
+    public void setUpMethod(){
+        Driver.getDriver().get(pageURL);
+        factory = new InnerPageFactory();
+    }
 
     @Test
     public void testText(){

@@ -5,6 +5,8 @@ import app.vercel.practice.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -31,74 +33,87 @@ public class ChallengingDOM extends VercelTestBase {
             {"Iuvaret8", "Apeirian8", "Adipisci8", "Definiebas8", "Consequuntur8", "Phaedrum8", "edit delete" },
             {"Iuvaret9", "Apeirian9", "Adipisci9", "Definiebas9", "Consequuntur9", "Phaedrum9", "edit delete" }
     };
+    InnerPageFactory factory;
+    class InnerPageFactory{
+        @FindBy(tagName = "h3")
+        WebElement header;
+        @FindBy(xpath= "//p[contains(text(), 'The hardest')]")
+        WebElement paragraph;
+        @FindBy(xpath= "//th[text()='Lorem']//parent::tr")
+        WebElement rowHeader;
+        @FindBy(xpath= "//div[@class='large-2 columns buttons']")
+        WebElement buttonContainer;
+        @FindBy(id = "canvas")
+        WebElement canvas;
+        InnerPageFactory(){
+            PageFactory.initElements(Driver.getDriver(), this);}
+        static List<WebElement> getTableHeadRows(){
+            return Driver.getDriver().findElements(By.xpath("//thead//child::tr//child::th"));
+        }
+        static List<WebElement> getTableBodyRows(){
+            return Driver.getDriver().findElements(By.xpath("//tbody//child::tr"));
+        }
+        static String[][] getTable(){
+            String[][] table = new String[11][7];
+
+            List<WebElement> rowHeaderOptions = getTableHeadRows();
+            for (int i = 0; i < table[0].length; i++) {
+                table[0][i] = rowHeaderOptions.get(i).getText();
+            }
+
+            List<WebElement> tableBodyRows = getTableBodyRows();
+            //i starts at 1 because row 0 is header row
+            for (int i = 1; i < table.length; i++) {
+                List<WebElement> tdList = tableBodyRows.get(i-1).findElements(By.tagName("td"));
+                for (int j = 0; j < table[i].length; j++) {
+                    table[i][j] = tdList.get(j).getText();
+                }
+            }
+            return table;
+        }
+        static void printTable(String[][] table){
+            for (int i = 0; i < table.length; i++) {
+                for (int j = 0; j < table[i].length; j++) {
+                    System.out.print(table[i][j] + " ");
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    @BeforeMethod
+    public void setUpMethod(){
+        Driver.getDriver().get(pageURL);
+        factory = new InnerPageFactory();
+    }
+
 
     @Test
     public void testText(){
-        Driver.getDriver().get(pageURL);
-
-        WebElement header = Driver.getDriver().findElement(By.tagName("h3"));
-        Assert.assertEquals(header.getText(), HEADER_TEXT, "Text of header" + MESSAGE_MATCH);
-        WebElement paragraph = Driver.getDriver().findElement(By.xpath("//p[contains(text(), 'The hardest')]"));
-        Assert.assertEquals(paragraph.getText(), PARAGRAPH_TEXT, "Text of paragraph" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.header.getText(), HEADER_TEXT, "Text of header" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.paragraph.getText(), PARAGRAPH_TEXT, "Text of paragraph" + MESSAGE_MATCH);
 
     }
     @Test
     public void testTable(){
-        Driver.getDriver().get(pageURL);
-
-        //String[] tableHeader = new String[7];
-        String[][] table = new String[11][7];
-
-        WebElement rowHeader = Driver.getDriver().findElement(By.xpath("//th[text()='Lorem']//parent::tr"));
-        List<WebElement> rowHeaderOptions = rowHeader.findElements(By.tagName("th"));
-
-
-        for (int i = 0; i < table[0].length; i++) {
-            table[0][i] = rowHeaderOptions.get(i).getText();
-        }
-
-        List<WebElement> tableBodyRows = Driver.getDriver().findElements(By.xpath("//tbody//child::tr"));
-        //i starts at 1 because row 0 is header row
-        for (int i = 1; i < table.length; i++) {
-            List<WebElement> tdList = tableBodyRows.get(i-1).findElements(By.tagName("td"));
-            for (int j = 0; j < table[i].length; j++) {
-                table[i][j] = tdList.get(j).getText();
-            }
-        }
-
-        //printTable(table);
-
-        Assert.assertEquals(table, TABLE, "Entire table" + MESSAGE_MATCH);
+        Assert.assertEquals(factory.getTable(), TABLE, "Entire table" + MESSAGE_MATCH);
     }
 
     @Test
     public void testCanvas(){
-        Driver.getDriver().get(pageURL);
-
         JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
         long answer = (long) js.executeScript("return result");
         //System.out.println(answer);
 
-        WebElement canvas = Driver.getDriver().findElement(By.xpath("//canvas[@id='canvas']"));
-        Assert.assertFalse(canvas == null, "Canvas did load correctly");
+        Assert.assertFalse(factory.canvas == null, "Canvas did load correctly");
         Assert.assertTrue(answer > 0, "Canvas was given result of javascript correctly to paint");
     }
 
     @Test
     public void testButtons(){
-        Driver.getDriver().get(pageURL);
-
-        WebElement buttonContainer = Driver.getDriver().findElement(By.xpath("//div[@class='large-2 columns buttons']"));
-        List<WebElement> buttons = buttonContainer.findElements(By.tagName("a"));
+        List<WebElement> buttons = factory.buttonContainer.findElements(By.tagName("a"));
         Assert.assertEquals(buttons.size(), 3, "Amount of buttons expected");
     }
 
-    public static void printTable(String[][] table){
-        for (int i = 0; i < table.length; i++) {
-            for (int j = 0; j < table[i].length; j++) {
-                System.out.print(table[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
+
 }
